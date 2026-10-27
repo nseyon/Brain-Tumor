@@ -1,0 +1,44 @@
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+glioma_env/
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Datasets
+Dataset/
+data/
+
+# Model checkpoints & weights
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.onnx
+
+# Generated outputs & runs
+outputs/
+
+# Nested reference repositories
+reference_repos/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Logs
+*.log
+
+# OS & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

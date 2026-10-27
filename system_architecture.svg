@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="2400" height="1420" viewBox="0 0 2400 1420" xmlns="http://www.w3.org/2000/svg" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="grad-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+    <linearGradient id="grad-input" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="grad-preproc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+    <linearGradient id="grad-swin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+    <linearGradient id="grad-mamba" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+    <linearGradient id="grad-unetr" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="grad-ev2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="grad-loss" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+    <linearGradient id="grad-post" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#b91c1c" />
+    </linearGradient>
+
+    <!-- Markers -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#7c3aed" />
+    </marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0d9488" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+    </marker>
+
+    <!-- Shadows -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="card-shadow" x="-3%" y="-3%" width="106%" height="110%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.05"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="2400" height="1420" fill="url(#grad-bg)" />
+  <rect x="20" y="20" width="2360" height="1380" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="url(#shadow)" />
+
+  <!-- HEADER -->
+  <g transform="translate(60, 45)">
+    <text x="0" y="32" font-size="28" font-weight="800" fill="#0f172a" letter-spacing="-0.5">End-to-End System Architecture: 3D SwinMamba Dual &amp; IS-MIM Self-Supervised Learning</text>
+    <text x="0" y="58" font-size="15" font-weight="500" fill="#64748b">Unified Deep Learning Pipeline for Multi-Parametric MRI Ingestion, 3D Intra-Modality Masked Pre-training, Joint Tumor Segmentation &amp; Glioma Grade Classification</text>
+    
+    <!-- Legend / Badges in Header -->
+    <g transform="translate(1420, 10)">
+      <rect x="0" y="0" width="160" height="32" rx="6" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5" />
+      <circle cx="16" cy="16" r="6" fill="#0284c7" />
+      <text x="32" y="21" font-size="12" font-weight="700" fill="#0369a1">Data Ingestion (mpMRI)</text>
+
+      <rect x="175" y="0" width="160" height="32" rx="6" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.5" />
+      <circle cx="191" cy="16" r="6" fill="#7c3aed" />
+      <text x="207" y="21" font-size="12" font-weight="700" fill="#6d28d9">Hybrid 3D Encoder</text>
+
+      <rect x="350" y="0" width="160" height="32" rx="6" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5" />
+      <circle cx="366" cy="16" r="6" fill="#2563eb" />
+      <text x="382" y="21" font-size="12" font-weight="700" fill="#1d4ed8">UNETR + EV2 Decoder</text>
+
+      <rect x="525" y="0" width="160" height="32" rx="6" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5" />
+      <circle cx="541" cy="16" r="6" fill="#ea580c" />
+      <text x="557" y="21" font-size="12" font-weight="700" fill="#c2410c">Multi-Task Heads</text>
+
+      <rect x="700" y="0" width="145" height="32" rx="6" fill="#ecfdf5" stroke="#34d399" stroke-width="1.5" />
+      <circle cx="716" cy="16" r="6" fill="#059669" />
+      <text x="732" y="21" font-size="12" font-weight="700" fill="#047857">Inference &amp; Post-Proc</text>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 1: DATA INGESTION & DETERMINISTIC PARTITIONING (Left Column)      -->
+  <!-- ========================================================================= -->
+  <g transform="translate(60, 130)">
+    <!-- Container Box -->
+    <rect x="0" y="0" width="340" height="1220" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" filter="url(#card-shadow)" />
+    <rect x="0" y="0" width="340" height="42" rx="12" fill="#f1f5f9" />
+    <path d="M 0 30 L 0 42 L 340 42 L 340 30 Z" fill="#f1f5f9" />
+    <text x="16" y="26" font-size="15" font-weight="700" fill="#1e293b">1. DATA INGESTION &amp; SPLIT</text>
+    <rect x="250" y="10" width="75" height="22" rx="4" fill="#0284c7" />
+    <text x="258" y="25" font-size="11" font-weight="700" fill="#ffffff">BraTS 2023</text>
+
+    <!-- Raw MRI Modalities -->
+    <g transform="translate(16, 56)">
+      <rect x="0" y="0" width="308" height="190" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+      <text x="14" y="24" font-size="13" font-weight="700" fill="#0f172a">Raw Multi-Parametric MRI (3D NIfTI)</text>
+      <text x="14" y="42" font-size="11" fill="#64748b">1,251 Adult Glioma Subjects | Axial, Sag, Cor</text>
+
+      <!-- 4 Channels list -->
+      <g transform="translate(14, 52)">
+        <rect x="0" y="0" width="280" height="26" rx="4" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1" />
+        <text x="10" y="17" font-size="11" font-weight="600" fill="#0369a1">T1-Native (t1n.nii) — Non-Contrast T1 Anatomy</text>
+
+        <rect x="0" y="32" width="280" height="26" rx="4" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1" />
+        <text x="10" y="49" font-size="11" font-weight="600" fill="#0369a1">T1-Contrast (t1c.nii) — Gadolinium Hyperintensity</text>
+
+        <rect x="0" y="64" width="280" height="26" rx="4" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1" />
+        <text x="10" y="81" font-size="11" font-weight="600" fill="#0369a1">T2-Weighted (t2w.nii) — Hyperintense Edema/Fluid</text>
+
+        <rect x="0" y="96" width="280" height="26" rx="4" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1" />
+        <text x="10" y="113" font-size="11" font-weight="600" fill="#0369a1">T2-FLAIR (t2f.nii) — Peritumoral Infiltration</text>
+      </g>
+    </g>
+
+    <!-- Flow Arrow -->
+    <line x1="170" y1="248" x2="170" y2="276" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Split Manager Box -->
+    <g transform="translate(16, 276)">
+      <rect x="0" y="0" width="308" height="185" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+      <text x="14" y="24" font-size="13" font-weight="700" fill="#0f172a">Deterministic SplitManager</text>
+      <text x="14" y="40" font-size="11" fill="#64748b">Zero-Leakage Patient Partitioning (Seed=42)</text>
+      
+      <!-- Sub-splits -->
+      <g transform="translate(14, 52)">
+        <rect x="0" y="0" width="280" height="34" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <text x="10" y="18" font-size="11" font-weight="700" fill="#1e293b">Train Split (60.0%): 750 Subjects</text>
+        <text x="10" y="30" font-size="10" fill="#64748b">IS-MIM Pre-train (750) &amp; Finetune (750)</text>
+
+        <rect x="0" y="40" width="280" height="34" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <text x="10" y="58" font-size="11" font-weight="700" fill="#1e293b">Val Split (20.0%): 250 Subjects</text>
+        <text x="10" y="70" font-size="10" fill="#64748b">Per-Epoch Validation &amp; Early Stopping</text>
+
+        <rect x="0" y="80" width="280" height="34" rx="4" fill="#fef2f2" stroke="#fecaca" stroke-width="1" />
+        <text x="10" y="98" font-size="11" font-weight="700" fill="#991b1b">Test Split (20.1%): 251 Subjects</text>
+        <text x="10" y="110" font-size="10" fill="#dc2626">Locked Unseen Test Split (evaluate.py)</text>
+      </g>
+    </g>
+
+    <!-- Flow Arrow -->
+    <line x1="170" y1="463" x2="170" y2="491" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Standardization & Preprocessing -->
+    <g transform="translate(16, 491)">
+      <rect x="0" y="0" width="308" height="235" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+      <text x="14" y="24" font-size="13" font-weight="700" fill="#0f172a">Preprocessing &amp; Normalization</text>
+      <text x="14" y="40" font-size="11" fill="#64748b">src/data/transforms.py Pipeline</text>
+
+      <g transform="translate(14, 52)">
+        <rect x="0" y="0" width="280" height="42" rx="4" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1" />
+        <text x="10" y="18" font-size="11" font-weight="700" fill="#0f766e">1. Foreground Robust Z-Score</text>
+        <text x="10" y="32" font-size="10" fill="#115e59">Clip [0.5%, 99.5%] | (x - μ) / (σ + 1e-7)</text>
+
+        <rect x="0" y="48" width="280" height="42" rx="4" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1" />
+        <text x="10" y="66" font-size="11" font-weight="700" fill="#0f766e">2. Spatial Standardization</text>
+        <text x="10" y="80" font-size="10" fill="#115e59">Isotropic Center Crop/Pad → [4, 96, 96, 96]</text>
+
+        <rect x="0" y="96" width="280" height="42" rx="4" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1" />
+        <text x="10" y="114" font-size="11" font-weight="700" fill="#0f766e">3. Multi-Region Label Mapping</text>
+        <text x="10" y="128" font-size="10" fill="#115e59">Raw Seg → WT (1+2+3), TC (1+3), ET (3)</text>
+
+        <rect x="0" y="144" width="280" height="32" rx="4" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1" />
+        <text x="10" y="160" font-size="11" font-weight="700" fill="#0f766e">4. Grade Label Extraction</text>
+        <text x="10" y="171" font-size="10" fill="#115e59">ET ≥ 50 / TC ≥ 150 voxels → HGG (1), else LGG (0)</text>
+      </g>
+    </g>
+
+    <!-- Flow Arrow -->
+    <line x1="170" y1="728" x2="170" y2="756" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Output Tensor of Pipeline -->
+    <g transform="translate(16, 756)">
+      <rect x="0" y="0" width="308" height="150" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" />
+      <text x="14" y="24" font-size="13" font-weight="700" fill="#0f172a">Batch Ingestion Tensor Formats</text>
+      
+      <rect x="14" y="38" width="280" height="44" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="22" y="56" font-size="11" font-weight="700" fill="#4338ca">Finetune / Inference Volume:</text>
+      <text x="22" y="72" font-size="11" font-family="'Consolas', monospace" fill="#1e293b">[B, 4, 96, 96, 96] (T1, T1c, T2, FLAIR)</text>
+
+      <rect x="14" y="90" width="280" height="46" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="22" y="108" font-size="11" font-weight="700" fill="#059669">Target Ground Truths:</text>
+      <text x="22" y="124" font-size="11" font-family="'Consolas', monospace" fill="#1e293b">Seg: [B, 3, 96, 96, 96] | Clf: [B] (0/1)</text>
+    </g>
+
+    <!-- Augmentation note -->
+    <g transform="translate(16, 918)">
+      <rect x="0" y="0" width="308" height="70" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" />
+      <text x="12" y="20" font-size="11" font-weight="700" fill="#475569">Online Data Augmentation (Train Mode):</text>
+      <text x="12" y="38" font-size="10" fill="#64748b">• Random 3D Flips along X, Y, Z axes (p=0.5)</text>
+      <text x="12" y="54" font-size="10" fill="#64748b">• Random 90° Rotations in Axial plane (k∈(1, 2, 3))</text>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 2: INTRA-MODALITY MASKED IMAGE MODELING (IS-MIM) (Top Center)     -->
+  <!-- ========================================================================= -->
+  <g transform="translate(420, 130)">
+    <rect x="0" y="0" width="1380" height="230" rx="12" fill="#faf5ff" stroke="#d8b4fe" stroke-width="2" filter="url(#card-shadow)" />
+    <rect x="0" y="0" width="1380" height="38" rx="12" fill="#f3e8ff" />
+    <path d="M 0 25 L 0 38 L 1380 38 L 1380 25 Z" fill="#f3e8ff" />
+    <text x="16" y="24" font-size="14" font-weight="700" fill="#6b21a8">2. SELF-SUPERVISED PRE-TRAINING PATH: INTRA-MODALITY MASKED IMAGE MODELING (IS-MIM)</text>
+    <rect x="1240" y="8" width="125" height="22" rx="4" fill="#9333ea" />
+    <text x="1248" y="23" font-size="11" font-weight="700" fill="#ffffff">Pre-train: 10 Epochs</text>
+
+    <!-- Sub-steps in horizontal layout -->
+    <g transform="translate(20, 50)">
+      <!-- 2a. 3D Patch Partitioning -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="240" height="150" rx="8" fill="#ffffff" stroke="#c084fc" stroke-width="1.5" />
+        <rect x="0" y="0" width="240" height="28" rx="8" fill="#f3e8ff" />
+        <text x="10" y="19" font-size="12" font-weight="700" fill="#7e22ce">2a. 3D Token Partition</text>
+        <text x="10" y="48" font-size="11" fill="#475569">Patch size: <tspan font-weight="700">16 × 16 × 16</tspan></text>
+        <text x="10" y="66" font-size="11" fill="#475569">Volume: 96³ → 6×6×6 grid</text>
+        <text x="10" y="88" font-size="11" font-weight="700" fill="#6b21a8">Tokens: 216 cuboids</text>
+        <rect x="10" y="102" width="220" height="34" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1" />
+        <text x="16" y="124" font-size="10" font-family="'Consolas', monospace" fill="#581c87">[B, 4, 16³, 216 tokens]</text>
+      </g>
+
+      <!-- Arrow -->
+      <line x1="242" y1="75" x2="275" y2="75" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+      <!-- 2b. Intra-Modality Swap -->
+      <g transform="translate(278, 0)">
+        <rect x="0" y="0" width="265" height="150" rx="8" fill="#ffffff" stroke="#c084fc" stroke-width="1.5" />
+        <rect x="0" y="0" width="265" height="28" rx="8" fill="#f3e8ff" />
+        <text x="10" y="19" font-size="12" font-weight="700" fill="#7e22ce">2b. Intra-Modality Swap</text>
+        <text x="10" y="48" font-size="11" fill="#475569">Cross-modality swap prob: <tspan font-weight="700">p = 0.5</tspan></text>
+        <text x="10" y="66" font-size="11" fill="#475569">Stochastic 2-iteration pair exchange</text>
+        <text x="10" y="84" font-size="10" fill="#64748b">T1 ↔ T1ce, T2 ↔ FLAIR pair permutations</text>
+        <rect x="10" y="102" width="245" height="34" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1" />
+        <text x="16" y="124" font-size="10" font-weight="700" fill="#581c87">Encodes modality-invariant anatomy</text>
+      </g>
+
+      <!-- Arrow -->
+      <line x1="545" y1="75" x2="578" y2="75" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+      <!-- 2c. 50% Block Masking -->
+      <g transform="translate(581, 0)">
+        <rect x="0" y="0" width="250" height="150" rx="8" fill="#ffffff" stroke="#c084fc" stroke-width="1.5" />
+        <rect x="0" y="0" width="250" height="28" rx="8" fill="#f3e8ff" />
+        <text x="10" y="19" font-size="12" font-weight="700" fill="#7e22ce">2c. 50% Block-Wise Masking</text>
+        <text x="10" y="48" font-size="11" fill="#475569">Mask ratio: <tspan font-weight="700">50% (108/216)</tspan></text>
+        <text x="10" y="66" font-size="11" fill="#475569">Selected cuboids set to 0.0</text>
+        <text x="10" y="84" font-size="10" fill="#64748b">Generates binary voxel_mask M</text>
+        <rect x="10" y="102" width="230" height="34" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1" />
+        <text x="16" y="124" font-size="10" font-weight="700" fill="#581c87">Forces spatial context synthesis</text>
+      </g>
+
+      <!-- Arrow -->
+      <line x1="833" y1="75" x2="866" y2="75" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+      <!-- 2d. Detokenize to Perturbed Volume -->
+      <g transform="translate(869, 0)">
+        <rect x="0" y="0" width="230" height="150" rx="8" fill="#ffffff" stroke="#c084fc" stroke-width="1.5" />
+        <rect x="0" y="0" width="230" height="28" rx="8" fill="#f3e8ff" />
+        <text x="10" y="19" font-size="12" font-weight="700" fill="#7e22ce">2d. Detokenization</text>
+        <text x="10" y="48" font-size="11" fill="#475569">Tokens → 3D Volume</text>
+        <text x="10" y="66" font-size="11" font-weight="700" fill="#1e293b">X_perturbed: [B, 4, 96, 96, 96]</text>
+        <text x="10" y="84" font-size="11" font-weight="700" fill="#1e293b">X_clean: [B, 4, 96, 96, 96]</text>
+        <rect x="10" y="102" width="210" height="34" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1" />
+        <text x="16" y="124" font-size="10" font-family="'Consolas', monospace" fill="#581c87">Voxel mask: [B, 1, 96³, 1]</text>
+      </g>
+
+      <!-- Arrow -->
+      <line x1="1101" y1="75" x2="1134" y2="75" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+      <!-- 2e. Pre-train Objective -->
+      <g transform="translate(1137, 0)">
+        <rect x="0" y="0" width="195" height="150" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.5" />
+        <rect x="0" y="0" width="195" height="28" rx="8" fill="#ffedd5" />
+        <text x="10" y="19" font-size="12" font-weight="700" fill="#c2410c">Pre-train Loss (Masked MSE)</text>
+        <text x="10" y="48" font-size="10" fill="#475569">L_MIM = Σ M ⊙ (X̂ - X)² / Σ M</text>
+        <text x="10" y="68" font-size="10" fill="#475569">Evaluated on corrupted</text>
+        <text x="10" y="82" font-size="10" fill="#475569">voxels only (3x3 conv head)</text>
+        <rect x="10" y="102" width="175" height="34" rx="4" fill="#fff7ed" stroke="#fed7aa" stroke-width="1" />
+        <text x="14" y="118" font-size="10" font-weight="700" fill="#9a3412">AdamW (lr=5e-4)</text>
+        <text x="14" y="130" font-size="9" fill="#c2410c">CosineAnnealingLR</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 3: CORE MODEL ARCHITECTURE: 3D SWINMAMBA DUAL (Center Area)        -->
+  <!-- ========================================================================= -->
+  <g transform="translate(420, 385)">
+    <!-- Main Model Container -->
+    <rect x="0" y="0" width="1380" height="965" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="url(#card-shadow)" />
+    <rect x="0" y="0" width="1380" height="42" rx="12" fill="#f8fafc" />
+    <path d="M 0 30 L 0 42 L 1380 42 L 1380 30 Z" fill="#f8fafc" />
+    <text x="20" y="27" font-size="16" font-weight="800" fill="#0f172a">3. UNIFIED HYBRID 3D SWINMAMBA DUAL BACKBONE &amp; UNETR DECODER</text>
+    <text x="650" y="27" font-size="13" font-weight="600" fill="#475569">[Stages 0-1: 3D Swin Local Attention | Stages 2-3: Tri-Directional Mamba SSM | Decoder: UNETR + EV2]</text>
+
+    <!-- LEFT COLUMN OF MODEL: HYBRID ENCODER -->
+    <g transform="translate(25, 60)">
+      <!-- Encoder Group Box -->
+      <rect x="0" y="0" width="560" height="880" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5" />
+      <rect x="0" y="0" width="560" height="36" rx="10" fill="#ede9fe" />
+      <text x="16" y="24" font-size="14" font-weight="700" fill="#5b21b6">HYBRID 3D ENCODER (SwinTransformer + MambaVision)</text>
+
+      <!-- Input Stem -->
+      <g transform="translate(20, 50)">
+        <rect x="0" y="0" width="520" height="54" rx="6" fill="#ffffff" stroke="#818cf8" stroke-width="1.5" />
+        <text x="14" y="22" font-size="12" font-weight="700" fill="#312e81">Encoder Stem Downsampler</text>
+        <text x="14" y="40" font-size="11" fill="#475569">Conv3D (4 → 48, k=7³, s=2, p=3) + BatchNorm3D + LeakyReLU(0.01) + Dropout3D(0.05)</text>
+        <rect x="400" y="10" width="110" height="34" rx="4" fill="#e0e7ff" />
+        <text x="408" y="32" font-size="11" font-family="'Consolas', monospace" font-weight="700" fill="#3730a3">[B, 48, 48³]</text>
+      </g>
+
+      <!-- Flow Arrow -->
+      <line x1="280" y1="104" x2="280" y2="124" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" />
+
+      <!-- STAGE 0: SWIN 3D -->
+      <g transform="translate(20, 124)">
+        <rect x="0" y="0" width="520" height="120" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="26" rx="6" fill="#e0e7ff" />
+        <text x="12" y="18" font-size="12" font-weight="700" fill="#3730a3">STAGE 0: 3D Swin Transformer (Depth=2, Dims=48, Heads=3, Win=7³)</text>
+        <g transform="translate(14, 34)">
+          <rect x="0" y="0" width="240" height="42" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1" />
+          <text x="10" y="18" font-size="11" font-weight="700" fill="#4c1d95">Block 0: 3D W-MSA</text>
+          <text x="10" y="32" font-size="10" fill="#6d28d9">Window Attention [7, 7, 7] | Shift: (0,0,0)</text>
+
+          <rect x="250" y="0" width="240" height="42" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1" />
+          <text x="10" y="18" font-size="11" font-weight="700" fill="#4c1d95">Block 1: 3D SW-MSA</text>
+          <text x="10" y="32" font-size="10" fill="#6d28d9">Shifted Window [7, 7, 7] | Shift: (3,3,3)</text>
+        </g>
+        <text x="14" y="102" font-size="10" fill="#475569">Norm + MlpChannel (48 → 96 → 48)  |  Output: <tspan font-family="'Consolas', monospace" font-weight="700" fill="#4338ca">[B, 48, 48, 48, 48]</tspan> → <tspan font-weight="700" fill="#0284c7">Skip S0</tspan></text>
+      </g>
+
+      <!-- Patch Merging 0 -> 1 -->
+      <g transform="translate(20, 252)">
+        <rect x="0" y="0" width="520" height="32" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+        <text x="14" y="20" font-size="11" font-weight="600" fill="#334155">Patch Merging 0→1: BatchNorm3D + Conv3D (48 → 96, k=2³, s=2) → [B, 96, 24, 24, 24]</text>
+      </g>
+
+      <!-- Flow Arrow -->
+      <line x1="280" y1="284" x2="280" y2="304" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" />
+
+      <!-- STAGE 1: SWIN 3D -->
+      <g transform="translate(20, 304)">
+        <rect x="0" y="0" width="520" height="120" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="26" rx="6" fill="#e0e7ff" />
+        <text x="12" y="18" font-size="12" font-weight="700" fill="#3730a3">STAGE 1: 3D Swin Transformer (Depth=2, Dims=96, Heads=6, Win=7³)</text>
+        <g transform="translate(14, 34)">
+          <rect x="0" y="0" width="240" height="42" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1" />
+          <text x="10" y="18" font-size="11" font-weight="700" fill="#4c1d95">Block 0: 3D W-MSA</text>
+          <text x="10" y="32" font-size="10" fill="#6d28d9">Window Attention [7, 7, 7] | Shift: (0,0,0)</text>
+
+          <rect x="250" y="0" width="240" height="42" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1" />
+          <text x="10" y="18" font-size="11" font-weight="700" fill="#4c1d95">Block 1: 3D SW-MSA</text>
+          <text x="10" y="32" font-size="10" fill="#6d28d9">Shifted Window [7, 7, 7] | Shift: (3,3,3)</text>
+        </g>
+        <text x="14" y="102" font-size="10" fill="#475569">Norm + MlpChannel (96 → 192 → 96)  |  Output: <tspan font-family="'Consolas', monospace" font-weight="700" fill="#4338ca">[B, 96, 24, 24, 24]</tspan> → <tspan font-weight="700" fill="#0284c7">Skip S1</tspan></text>
+      </g>
+
+      <!-- Patch Merging 1 -> 2 -->
+      <g transform="translate(20, 432)">
+        <rect x="0" y="0" width="520" height="32" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+        <text x="14" y="20" font-size="11" font-weight="600" fill="#334155">Patch Merging 1→2: BatchNorm3D + Conv3D (96 → 192, k=2³, s=2) → [B, 192, 12, 12, 12]</text>
+      </g>
+
+      <!-- Flow Arrow -->
+      <line x1="280" y1="464" x2="280" y2="484" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" />
+
+      <!-- STAGE 2: GSC + TRI-DIRECTIONAL MAMBA -->
+      <g transform="translate(20, 484)">
+        <rect x="0" y="0" width="520" height="160" rx="6" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="26" rx="6" fill="#ede9fe" />
+        <text x="12" y="18" font-size="12" font-weight="700" fill="#5b21b6">STAGE 2: GSC + Tri-Directional Mamba SSM (Dims=192, Depth=2, L=1,728)</text>
+        
+        <!-- GSC box -->
+        <rect x="14" y="34" width="492" height="34" rx="4" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1" />
+        <text x="24" y="48" font-size="11" font-weight="700" fill="#6b21a8">GSC (Global Spatial Context Refinement):</text>
+        <text x="24" y="61" font-size="10" fill="#475569">Parallel (3×3×3 Conv) &amp; (1×1×1 Conv) with InstanceNorm3D + ReLU + Residual Connection</text>
+
+        <!-- Tri-directional Mamba box -->
+        <g transform="translate(14, 74)">
+          <rect x="0" y="0" width="492" height="60" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1" />
+          <text x="10" y="16" font-size="11" font-weight="700" fill="#4c1d95">Tri-Directional Selective State-Space Scans (Axial, Sagittal, Coronal):</text>
+          
+          <rect x="10" y="24" width="145" height="28" rx="3" fill="#ffffff" stroke="#a78bfa" stroke-width="1" />
+          <text x="16" y="38" font-size="10" font-weight="700" fill="#5b21b6">Axial Scan (D→H→W)</text>
+          <text x="16" y="48" font-size="9" fill="#6d28d9">Depthwise 1D Conv + SSM</text>
+
+          <rect x="165" y="24" width="155" height="28" rx="3" fill="#ffffff" stroke="#a78bfa" stroke-width="1" />
+          <text x="171" y="38" font-size="10" font-weight="700" fill="#5b21b6">Sagittal Scan (W→D→H)</text>
+          <text x="171" y="48" font-size="9" fill="#6d28d9">Depthwise 1D Conv + SSM</text>
+
+          <rect x="330" y="24" width="150" height="28" rx="3" fill="#ffffff" stroke="#a78bfa" stroke-width="1" />
+          <text x="336" y="38" font-size="10" font-weight="700" fill="#5b21b6">Coronal Scan (H→W→D)</text>
+          <text x="336" y="48" font-size="9" fill="#6d28d9">Depthwise 1D Conv + SSM</text>
+        </g>
+        <text x="14" y="148" font-size="10" fill="#475569">MlpChannel (192 → 384 → 192)  |  Output: <tspan font-family="'Consolas', monospace" font-weight="700" fill="#5b21b6">[B, 192, 12, 12, 12]</tspan> → <tspan font-weight="700" fill="#0284c7">Skip S2</tspan></text>
+      </g>
+
+      <!-- Patch Merging 2 -> 3 -->
+      <g transform="translate(20, 652)">
+        <rect x="0" y="0" width="520" height="32" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+        <text x="14" y="20" font-size="11" font-weight="600" fill="#334155">Patch Merging 2→3: BatchNorm3D + Conv3D (192 → 384, k=2³, s=2) → [B, 384, 6, 6, 6]</text>
+      </g>
+
+      <!-- Flow Arrow -->
+      <line x1="280" y1="684" x2="280" y2="704" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" />
+
+      <!-- STAGE 3: GSC + TRI-DIRECTIONAL MAMBA (Bottleneck Level) -->
+      <g transform="translate(20, 704)">
+        <rect x="0" y="0" width="520" height="150" rx="6" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="26" rx="6" fill="#ede9fe" />
+        <text x="12" y="18" font-size="12" font-weight="700" fill="#5b21b6">STAGE 3: Deepest Mamba SSM (Dims=384, Depth=2, Sequence L=216)</text>
+        <text x="14" y="48" font-size="11" fill="#475569">GSC Block (Residual 3×3×3 &amp; 1×1×1 convolutions) + LayerScale (1e-6)</text>
+        <text x="14" y="66" font-size="11" fill="#475569">Orthogonal Volumetric SSM State Size: <tspan font-weight="700">d_state=16, d_conv=3, expand=1</tspan></text>
+        <text x="14" y="86" font-size="10" fill="#64748b">Captures long-range continuous 3D context across entire patient brain space</text>
+        
+        <rect x="14" y="98" width="492" height="38" rx="4" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1" />
+        <text x="24" y="116" font-size="11" font-weight="700" fill="#5b21b6">Deepest Encoder Features:</text>
+        <text x="24" y="129" font-size="11" font-family="'Consolas', monospace" fill="#1e293b">[B, 384, 6, 6, 6] → Passed to enc_bottleneck</text>
+      </g>
+    </g>
+
+    <!-- CENTER COLUMN: SKIP ENCODER CONNECTIONS (Vertical Highway) -->
+    <g transform="translate(605, 60)">
+      <rect x="0" y="0" width="170" height="880" rx="10" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1.5" />
+      <rect x="0" y="0" width="170" height="36" rx="10" fill="#e0f2fe" />
+      <text x="12" y="24" font-size="13" font-weight="700" fill="#0369a1">SKIP ENCODERS</text>
+
+      <!-- Skip Stem -->
+      <g transform="translate(10, 52)">
+        <rect x="0" y="0" width="150" height="52" rx="6" fill="#ffffff" stroke="#38bdf8" stroke-width="1.5" />
+        <text x="8" y="18" font-size="11" font-weight="700" fill="#0284c7">enc_stem (4→48)</text>
+        <text x="8" y="32" font-size="9" fill="#64748b">UnetrBasicBlock3D</text>
+        <text x="8" y="44" font-size="9" font-family="'Consolas', monospace" font-weight="700" fill="#0369a1">[B, 48, 96³]</text>
+      </g>
+
+      <!-- Skip 0 -->
+      <g transform="translate(10, 158)">
+        <rect x="0" y="0" width="150" height="52" rx="6" fill="#ffffff" stroke="#38bdf8" stroke-width="1.5" />
+        <text x="8" y="18" font-size="11" font-weight="700" fill="#0284c7">enc_stage0 (48→48)</text>
+        <text x="8" y="32" font-size="9" fill="#64748b">UnetrBasicBlock3D</text>
+        <text x="8" y="44" font-size="9" font-family="'Consolas', monospace" font-weight="700" fill="#0369a1">[B, 48, 48³]</text>
+      </g>
+
+      <!-- Skip 1 -->
+      <g transform="translate(10, 338)">
+        <rect x="0" y="0" width="150" height="52" rx="6" fill="#ffffff" stroke="#38bdf8" stroke-width="1.5" />
+        <text x="8" y="18" font-size="11" font-weight="700" fill="#0284c7">enc_stage1 (96→96)</text>
+        <text x="8" y="32" font-size="9" fill="#64748b">UnetrBasicBlock3D</text>
+        <text x="8" y="44" font-size="9" font-family="'Consolas', monospace" font-weight="700" fill="#0369a1">[B, 96, 24³]</text>
+      </g>
+
+      <!-- Skip 2 -->
+      <g transform="translate(10, 538)">
+        <rect x="0" y="0" width="150" height="52" rx="6" fill="#ffffff" stroke="#38bdf8" stroke-width="1.5" />
+        <text x="8" y="18" font-size="11" font-weight="700" fill="#0284c7">enc_stage2 (192→192)</text>
+        <text x="8" y="32" font-size="9" fill="#64748b">UnetrBasicBlock3D</text>
+        <text x="8" y="44" font-size="9" font-family="'Consolas', monospace" font-weight="700" fill="#0369a1">[B, 192, 12³]</text>
+      </g>
+
+      <!-- Bottleneck Block -->
+      <g transform="translate(10, 755)">
+        <rect x="0" y="0" width="150" height="70" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
+        <text x="8" y="18" font-size="11" font-weight="700" fill="#1d4ed8">enc_bottleneck</text>
+        <text x="8" y="32" font-size="10" fill="#475569">384 → 768 dims</text>
+        <rect x="6" y="42" width="138" height="22" rx="3" fill="#dbeafe" />
+        <text x="10" y="57" font-size="10" font-family="'Consolas', monospace" font-weight="700" fill="#1e40af">[B, 768, 6, 6, 6]</text>
+      </g>
+    </g>
+
+    <!-- Skip Connection Routing Lines (Curved/Orthogonal paths) -->
+    <!-- From raw input / stem to enc_stem -->
+    <path d="M -40 76 L 605 76" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="4,3" fill="none" />
+    <!-- From stage 0 to enc_stage0 -->
+    <path d="M 545 220 L 605 184" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="4,3" fill="none" marker-end="url(#arrow-blue)" />
+    <!-- From stage 1 to enc_stage1 -->
+    <path d="M 545 400 L 605 364" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="4,3" fill="none" marker-end="url(#arrow-blue)" />
+    <!-- From stage 2 to enc_stage2 -->
+    <path d="M 545 600 L 605 564" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="4,3" fill="none" marker-end="url(#arrow-blue)" />
+    <!-- From stage 3 to enc_bottleneck -->
+    <path d="M 545 830 L 605 800" stroke="#1d4ed8" stroke-width="2" fill="none" marker-end="url(#arrow-blue)" />
+
+    <!-- RIGHT COLUMN OF MODEL: PROGRESSIVE UNETR + EV2 DECODER -->
+    <g transform="translate(795, 60)">
+      <rect x="0" y="0" width="560" height="880" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5" />
+      <rect x="0" y="0" width="560" height="36" rx="10" fill="#dbeafe" />
+      <text x="16" y="24" font-size="14" font-weight="700" fill="#1e40af">PROGRESSIVE UNETR DECODER + EV2 RESIDUAL REFINEMENT</text>
+
+      <!-- Decoder 4 (Bottleneck -> Level 3) -->
+      <g transform="translate(20, 725)">
+        <rect x="0" y="0" width="520" height="98" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="24" rx="6" fill="#eff6ff" />
+        <text x="12" y="17" font-size="12" font-weight="700" fill="#1d4ed8">Decoder 4 (UnetrUpBlock3D): 768 → 192 (6³ → 12³)</text>
+        <text x="12" y="42" font-size="11" fill="#475569">ConvTranspose3d (768 → 192, k=2, s=2) ⊕ Concat with <tspan font-weight="700" fill="#0284c7">skip_2 (192)</tspan></text>
+        <rect x="12" y="52" width="496" height="34" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+        <text x="20" y="68" font-size="10" font-weight="700" fill="#166534">EV2Block Fusion (384 → 192): Squeeze-and-Excitation Channel Attention + Residual Conv</text>
+        <text x="20" y="80" font-size="10" font-family="'Consolas', monospace" fill="#14532d">Output: [B, 192, 12, 12, 12]</text>
+      </g>
+
+      <!-- Up Arrow 4 to 3 -->
+      <line x1="280" y1="725" x2="280" y2="695" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+      <!-- Decoder 3 (Level 3 -> Level 2) -->
+      <g transform="translate(20, 560)">
+        <rect x="0" y="0" width="520" height="98" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="24" rx="6" fill="#eff6ff" />
+        <text x="12" y="17" font-size="12" font-weight="700" fill="#1d4ed8">Decoder 3 (UnetrUpBlock3D): 192 → 96 (12³ → 24³)</text>
+        <text x="12" y="42" font-size="11" fill="#475569">ConvTranspose3d (192 → 96, k=2, s=2) ⊕ Concat with <tspan font-weight="700" fill="#0284c7">skip_1 (96)</tspan></text>
+        <rect x="12" y="52" width="496" height="34" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+        <text x="20" y="68" font-size="10" font-weight="700" fill="#166534">EV2Block Fusion (192 → 96): Squeeze-and-Excitation Channel Attention + Residual Conv</text>
+        <text x="20" y="80" font-size="10" font-family="'Consolas', monospace" fill="#14532d">Output: [B, 96, 24, 24, 24]</text>
+      </g>
+
+      <!-- Up Arrow 3 to 2 -->
+      <line x1="280" y1="560" x2="280" y2="530" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+      <!-- Decoder 2 (Level 2 -> Level 1) -->
+      <g transform="translate(20, 395)">
+        <rect x="0" y="0" width="520" height="98" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="24" rx="6" fill="#eff6ff" />
+        <text x="12" y="17" font-size="12" font-weight="700" fill="#1d4ed8">Decoder 2 (UnetrUpBlock3D): 96 → 48 (24³ → 48³)</text>
+        <text x="12" y="42" font-size="11" fill="#475569">ConvTranspose3d (96 → 48, k=2, s=2) ⊕ Concat with <tspan font-weight="700" fill="#0284c7">skip_0 (48)</tspan></text>
+        <rect x="12" y="52" width="496" height="34" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+        <text x="20" y="68" font-size="10" font-weight="700" fill="#166534">EV2Block Fusion (96 → 48): Squeeze-and-Excitation Channel Attention + Residual Conv</text>
+        <text x="20" y="80" font-size="10" font-family="'Consolas', monospace" fill="#14532d">Output: [B, 48, 48, 48, 48]</text>
+      </g>
+
+      <!-- Up Arrow 2 to 1 -->
+      <line x1="280" y1="395" x2="280" y2="365" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+      <!-- Decoder 1 (Level 1 -> Full Res) -->
+      <g transform="translate(20, 230)">
+        <rect x="0" y="0" width="520" height="98" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" />
+        <rect x="0" y="0" width="520" height="24" rx="6" fill="#eff6ff" />
+        <text x="12" y="17" font-size="12" font-weight="700" fill="#1d4ed8">Decoder 1 (UnetrUpBlock3D): 48 → 48 (48³ → 96³)</text>
+        <text x="12" y="42" font-size="11" fill="#475569">ConvTranspose3d (48 → 48, k=2, s=2) ⊕ Concat with <tspan font-weight="700" fill="#0284c7">skip_stem (48)</tspan></text>
+        <rect x="12" y="52" width="496" height="34" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+        <text x="20" y="68" font-size="10" font-weight="700" fill="#166534">EV2Block Fusion (96 → 48): Squeeze-and-Excitation Channel Attention + Residual Conv</text>
+        <text x="20" y="80" font-size="10" font-family="'Consolas', monospace" fill="#14532d">Output: [B, 48, 96, 96, 96]</text>
+      </g>
+
+      <!-- Up Arrow 1 to Refinement -->
+      <line x1="280" y1="230" x2="280" y2="200" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)" />
+
+      <!-- EV2 Refinement Block (Final) -->
+      <g transform="translate(20, 65)">
+        <rect x="0" y="0" width="520" height="110" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2" />
+        <rect x="0" y="0" width="520" height="28" rx="8" fill="#d1fae5" />
+        <text x="14" y="19" font-size="12" font-weight="700" fill="#065f46">EV2 Residual Refinement Block (Final Decoder Feature Map)</text>
+        <text x="14" y="46" font-size="11" fill="#334155">Channel Squeeze-and-Excitation: <tspan font-family="'Consolas', monospace">Y = φ(A(R(X))) + A(R(X))</tspan></text>
+        <text x="14" y="64" font-size="10" fill="#64748b">AdaptiveAvgPool3D → FC(48→12) → ReLU → FC(12→48) → Sigmoid Channel Weights</text>
+        <rect x="14" y="74" width="492" height="28" rx="4" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1" />
+        <text x="24" y="92" font-size="11" font-weight="700" fill="#047857">Final Refined Decoder Latent: <tspan font-family="'Consolas', monospace">[B, 48, 96, 96, 96]</tspan></text>
+      </g>
+
+      <!-- Skip connections from Center Column into Decoders -->
+      <!-- Skip stem to Dec1 -->
+      <path d="M -20 110 L 20 250" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="3,3" fill="none" marker-end="url(#arrow-blue)" />
+      <!-- Skip 0 to Dec2 -->
+      <path d="M -20 216 L 20 415" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="3,3" fill="none" marker-end="url(#arrow-blue)" />
+      <!-- Skip 1 to Dec3 -->
+      <path d="M -20 396 L 20 580" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="3,3" fill="none" marker-end="url(#arrow-blue)" />
+      <!-- Skip 2 to Dec4 -->
+      <path d="M -20 596 L 20 745" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="3,3" fill="none" marker-end="url(#arrow-blue)" />
+      <!-- Bottleneck to Dec4 -->
+      <path d="M -20 825 L 20 780" stroke="#1d4ed8" stroke-width="2" fill="none" marker-end="url(#arrow-blue)" />
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 4: TASK HEADS & LOSS FORMULATION (Right Column)                   -->
+  <!-- ========================================================================= -->
+  <g transform="translate(1830, 130)">
+    <rect x="0" y="0" width="510" height="1220" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" filter="url(#card-shadow)" />
+    <rect x="0" y="0" width="510" height="42" rx="12" fill="#f1f5f9" />
+    <path d="M 0 30 L 0 42 L 510 42 L 510 30 Z" fill="#f1f5f9" />
+    <text x="18" y="26" font-size="15" font-weight="700" fill="#1e293b">4. TASK HEADS &amp; LOSS FORMULATION</text>
+    <rect x="385" y="10" width="105" height="22" rx="4" fill="#ea580c" />
+    <text x="393" y="25" font-size="11" font-weight="700" fill="#ffffff">Multi-Task Fine-tune</text>
+
+    <!-- HEAD 1: DENSE 3D SEGMENTATION -->
+    <g transform="translate(18, 56)">
+      <rect x="0" y="0" width="474" height="230" rx="8" fill="#ffffff" stroke="#38bdf8" stroke-width="1.5" />
+      <rect x="0" y="0" width="474" height="28" rx="8" fill="#e0f2fe" />
+      <text x="14" y="19" font-size="12" font-weight="700" fill="#0369a1">HEAD 1: 3D Dense Tumor Segmentation (UnetOutBlock3D)</text>
+      
+      <text x="14" y="48" font-size="11" fill="#334155">Input: Final Decoder Features <tspan font-family="'Consolas', monospace">[B, 48, 96, 96, 96]</tspan></text>
+      <text x="14" y="66" font-size="11" fill="#334155">Architecture: <tspan font-weight="700">Conv3D (48 → 3, kernel=1³, stride=1, bias=True)</tspan></text>
+      
+      <!-- Channels Output -->
+      <g transform="translate(14, 76)">
+        <rect x="0" y="0" width="446" height="66" rx="4" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1" />
+        <text x="10" y="18" font-size="11" font-weight="700" fill="#0284c7">Output Channels (Multi-Label Sigmoid Activation):</text>
+        <text x="10" y="34" font-size="10" fill="#0369a1">• Channel 0: Tumor Core (TC) = Necrotic Core + Enhancing Tumor</text>
+        <text x="10" y="47" font-size="10" fill="#0369a1">• Channel 1: Whole Tumor (WT) = Complete Edema + Core + Enhancing</text>
+        <text x="10" y="60" font-size="10" fill="#0369a1">• Channel 2: Enhancing Tumor (ET) = Active Contrast Enhancement</text>
+      </g>
+
+      <rect x="14" y="150" width="446" height="34" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+      <text x="22" y="172" font-size="11" font-family="'Consolas', monospace" font-weight="700" fill="#0369a1">Raw Segmentation Logits: [B, 3, 96, 96, 96]</text>
+
+      <!-- Loss formulation -->
+      <g transform="translate(14, 190)">
+        <text x="0" y="14" font-size="10" font-weight="700" fill="#c2410c">Loss: L_seg = L_Dice (weights: TC=1.3, WT=1.0, ET=1.5) + L_Focal (α=0.25, γ=2.0)</text>
+      </g>
+    </g>
+
+    <!-- HEAD 2: GLIOMA GRADE CLASSIFICATION -->
+    <g transform="translate(18, 305)">
+      <rect x="0" y="0" width="474" height="245" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5" />
+      <rect x="0" y="0" width="474" height="28" rx="8" fill="#ede9fe" />
+      <text x="14" y="19" font-size="12" font-weight="700" fill="#5b21b6">HEAD 2: Glioma Grade Classification (ClassificationHead)</text>
+
+      <text x="14" y="48" font-size="11" fill="#334155">Input: Bottleneck Latent Representation <tspan font-family="'Consolas', monospace">[B, 768, 6, 6, 6]</tspan></text>
+      
+      <!-- Dual Pooling Structure -->
+      <g transform="translate(14, 58)">
+        <rect x="0" y="0" width="218" height="42" rx="4" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1" />
+        <text x="10" y="18" font-size="10" font-weight="700" fill="#6b21a8">Global Avg Pooling (GAP)</text>
+        <text x="10" y="32" font-size="9" font-family="'Consolas', monospace" fill="#4c1d95">AdaptiveAvgPool3D → [B, 768]</text>
+
+        <rect x="228" y="0" width="218" height="42" rx="4" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1" />
+        <text x="10" y="18" font-size="10" font-weight="700" fill="#6b21a8">Global Max Pooling (GMP)</text>
+        <text x="10" y="32" font-size="9" font-family="'Consolas', monospace" fill="#4c1d95">AdaptiveMaxPool3D → [B, 768]</text>
+      </g>
+
+      <g transform="translate(14, 108)">
+        <rect x="0" y="0" width="446" height="52" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1" />
+        <text x="10" y="16" font-size="11" font-weight="700" fill="#4c1d95">Fused Bottleneck Representation: [B, 1536]</text>
+        <text x="10" y="32" font-size="10" fill="#334155">Linear(1536→256) → LN → GELU → <tspan font-weight="700" fill="#dc2626">Dropout(0.4)</tspan></text>
+        <text x="10" y="45" font-size="10" fill="#334155">Linear(256→128) → LN → GELU → <tspan font-weight="700" fill="#dc2626">Dropout(0.2)</tspan> → Linear(128→2)</text>
+      </g>
+
+      <rect x="14" y="168" width="446" height="34" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+      <text x="20" y="190" font-size="11" font-family="'Consolas', monospace" font-weight="700" fill="#5b21b6">Classification Logits: [B, 2] → Softmax [P(LGG), P(HGG)]</text>
+
+      <g transform="translate(14, 210)">
+        <text x="0" y="14" font-size="10" font-weight="700" fill="#c2410c">Loss: L_clf = CrossEntropy(label_smoothing=0.05)</text>
+        <text x="0" y="28" font-size="10" font-weight="700" fill="#991b1b">Total Multi-Task Loss: L_total = L_seg + 0.5 · L_clf</text>
+      </g>
+    </g>
+
+    <!-- SECTION 5: POST-PROCESSING & INFERENCE EVALUATION -->
+    <g transform="translate(18, 570)">
+      <rect x="0" y="0" width="474" height="630" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5" />
+      <rect x="0" y="0" width="474" height="28" rx="8" fill="#ecfdf5" />
+      <text x="14" y="19" font-size="12" font-weight="700" fill="#065f46">5. CLINICAL POST-PROCESSING &amp; TEST EVALUATION</text>
+
+      <!-- Post-processing steps -->
+      <g transform="translate(14, 40)">
+        <text x="0" y="16" font-size="12" font-weight="700" fill="#0f172a">Post-Processing (src/utils/postprocessing.py):</text>
+        
+        <rect x="0" y="26" width="446" height="42" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+        <text x="10" y="44" font-size="11" font-weight="700" fill="#15803d">1. Sigmoid Thresholding:</text>
+        <text x="10" y="58" font-size="10" fill="#166534">Binary voxel segmentation map: p(voxel) &gt; 0.5 → (0, 1)</text>
+
+        <rect x="0" y="74" width="446" height="74" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+        <text x="10" y="92" font-size="11" font-weight="700" fill="#15803d">2. 3D Connected Component Analysis (scipy.ndimage.label):</text>
+        <text x="10" y="106" font-size="10" fill="#166534">Prunes false-positive isolated islands via anatomical thresholds:</text>
+        <text x="10" y="122" font-size="10" font-weight="700" fill="#047857">• Whole Tumor (WT) cluster &lt; 250 voxels → 0</text>
+        <text x="10" y="136" font-size="10" font-weight="700" fill="#047857">• Tumor Core (TC) &lt; 150 voxels → 0 | Enhancing (ET) &lt; 100 voxels → 0</text>
+      </g>
+
+      <!-- Evaluation Outputs -->
+      <g transform="translate(14, 205)">
+        <text x="0" y="16" font-size="12" font-weight="700" fill="#0f172a">Quantitative Evaluation Metrics (evaluate.py):</text>
+
+        <rect x="0" y="26" width="446" height="120" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+        <text x="10" y="44" font-size="11" font-weight="700" fill="#1e293b">Segmentation Metrics (Test Cohort: 251 Patients):</text>
+        <text x="10" y="60" font-size="10" fill="#334155">• Overlap Accuracy: <tspan font-weight="700">Dice Score</tspan> (WT, TC, ET, and Mean Dice)</text>
+        <text x="10" y="76" font-size="10" fill="#334155">• Boundary Distance: <tspan font-weight="700">95th Percentile Hausdorff Distance (HD95, mm)</tspan></text>
+        <text x="10" y="92" font-size="10" fill="#334155">• Volumetric Conformance: Relative Volume Difference (RVD)</text>
+        <text x="10" y="108" font-size="10" fill="#334155">• Sensitivity (Recall) &amp; Specificity across all 3 tumor subregions</text>
+
+        <rect x="0" y="154" width="446" height="78" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+        <text x="10" y="172" font-size="11" font-weight="700" fill="#1e293b">Classification Metrics (HGG vs LGG):</text>
+        <text x="10" y="188" font-size="10" fill="#334155">• Accuracy (%) | F1-Score | Precision | Recall</text>
+        <text x="10" y="204" font-size="10" fill="#334155">• Confusion Matrix (True Positive HGG, True Negative LGG)</text>
+        <text x="10" y="220" font-size="10" fill="#334155">• Area Under the ROC Curve (AUC-ROC)</text>
+      </g>
+
+      <!-- Artifact Outputs -->
+      <g transform="translate(14, 460)">
+        <rect x="0" y="0" width="446" height="150" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5" />
+        <text x="14" y="22" font-size="12" font-weight="700" fill="#14532d">Final Exportable Deliverables:</text>
+        <text x="14" y="42" font-size="10" fill="#15803d">📁 <tspan font-weight="700">outputs/predictions/*.nii.gz</tspan> — Reconstructed 3D binary masks</text>
+        <text x="14" y="60" font-size="10" fill="#15803d">📊 <tspan font-weight="700">outputs/graphs/01_to_10_*.png</tspan> — 10 Publication-grade evaluation plots</text>
+        <text x="14" y="78" font-size="10" fill="#15803d">💾 <tspan font-weight="700">checkpoints/finetune/finetune_best.pt</tspan> — Optimal model checkpoint</text>
+        <text x="14" y="96" font-size="10" fill="#15803d">🖥️ <tspan font-weight="700">app.py</tspan> — Interactive Clinical MRI Web Dashboard (Streamlit)</text>
+        <text x="14" y="114" font-size="10" fill="#15803d">📓 <tspan font-weight="700">module_wise_output_demo.ipynb</tspan> — Step-by-step tensor verification</text>
+        <text x="14" y="132" font-size="10" fill="#15803d">📄 <tspan font-weight="700">checkpoints/split/split_manifest.json</tspan> — Full audit log &amp; SHA-256 sums</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- External Flow Connectors from Dec_out and Bottleneck to Task Heads -->
+  <!-- Decoder Refined Output to Seg Head -->
+  <path d="M 1740 500 L 1830 200" stroke="#0284c7" stroke-width="2.5" fill="none" marker-end="url(#arrow-blue)" />
+  <!-- Bottleneck to Clf Head -->
+  <path d="M 1485 860 L 1830 430" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="5,4" fill="none" marker-end="url(#arrow-purple)" />
+
+</svg>

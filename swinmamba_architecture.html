@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Research-grade architecture diagram styling */
+    :root {
+      --bg: #ffffff;
+      --fg: #1a1a2e;
+      --accent1: #3b82f6;
+      --accent2: #8b5cf6;
+      --accent3: #10b981;
+      --accent4: #f59e0b;
+      --accent5: #ef4444;
+      --accent6: #06b6d4;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --card: #f8fafc;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --fg: #e2e8f0;
+        --accent1: #60a5fa;
+        --accent2: #a78bfa;
+        --accent3: #34d399;
+        --accent4: #fbbf24;
+        --accent5: #f87171;
+        --accent6: #22d3ee;
+        --muted: #94a3b8;
+        --border: #334155;
+        --card: #1e293b;
+      }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    svg text {
+      font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      max-width: 350px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      pointer-events: none;
+      z-index: 1000;
+      display: none;
+      color: var(--fg);
+    }
+
+    .tooltip .tt-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: var(--accent1);
+    }
+
+    .tooltip .tt-shape {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 11px;
+      color: var(--accent3);
+      margin-bottom: 2px;
+    }
+
+    .diagram-title {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .diagram-title h1 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--fg);
+    }
+
+    .diagram-title .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .legend-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 10px 0;
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+
+    .phase-tabs {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      margin: 12px 0;
+    }
+
+    .phase-tab {
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      transition: all 0.3s;
+    }
+
+    .phase-tab.active {
+      background: var(--accent1);
+      color: white;
+      border-color: var(--accent1);
+    }
+
+    .phase-tab:hover:not(.active) {
+      border-color: var(--accent1);
+      color: var(--accent1);
+    }
+
+    /* Animations */
+    @keyframes flowPulse {
+      0%, 100% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -20; }
+    }
+
+    .flow-arrow {
+      stroke-dasharray: 6, 3;
+      animation: flowPulse 1.5s linear infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .module-group {
+      transition: opacity 0.4s ease;
+    }
+
+    .dimmed {
+      opacity: 0.15;
+    }
+
+    .highlighted {
+      opacity: 1;
+    }
+
+    /* Download button */
+    .download-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 8px 16px;
+      background: var(--accent1);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .download-btn:hover {
+      filter: brightness(1.1);
+    }
+  </style>
+</head>
+<body class="bg-transparent antialiased">
+
+  <div class="diagram-title">
+    <h1>SwinMamba-UNETR: Complete System Architecture</h1>
+    <div class="subtitle">3D Brain Tumor Segmentation & Classification with Hybrid Swin Transformer–Mamba Dual-Stream Encoder</div>
+    <div class="subtitle" style="font-size:11px; margin-top:2px;">UCSF-PDGM GBM MRI Dataset · Inter-Slice Masked Image Modeling (IS-MIM) Self-Supervised Pre-training · Multi-Task Fine-tuning</div>
+  </div>
+
+  <div class="phase-tabs">
+    <div class="phase-tab active" onclick="setPhase('all')">Full Pipeline</div>
+    <div class="phase-tab" onclick="setPhase('pretrain')">Phase 1: IS-MIM Pre-training</div>
+    <div class="phase-tab" onclick="setPhase('finetune')">Phase 2: Multi-Task Fine-tuning</div>
+    <div class="phase-tab" onclick="setPhase('eval')">Phase 3: Evaluation</div>
+  </div>
+
+  <div class="legend-container">
+    <div class="legend-item"><div class="legend-swatch" style="background:#3b82f6"></div><span>Data Pipeline</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#8b5cf6"></div><span>Swin Transformer Stream</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#06b6d4"></div><span>Mamba SSM Stream</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#10b981"></div><span>UNETR Decoder</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#f59e0b"></div><span>Task Heads & Losses</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#ef4444"></div><span>Evaluation & Utils</span></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:none; border:2px dashed #94a3b8; width:10px; height:10px;"></div><span>Skip Connection</span></div>
+  </div>
+
+  <button class="download-btn" onclick="downloadSVG()">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v9M4 8l4 4 4-4M2 13h12"/></svg>
+    Export SVG
+  </button>
+
+  <div id="tooltip" class="tooltip"></div>
+
+  <div style="overflow-x:auto; display:flex; justify-content:center;">
+    <svg id="archDiagram" viewBox="0 0 1680 2400" width="1680" height="2400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+        </marker>
+        <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#8b5cf6"/>
+        </marker>
+        <marker id="arrowCyan" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#06b6d4"/>
+        </marker>
+        <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#10b981"/>
+        </marker>
+        <marker id="arrowAmber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#f59e0b"/>
+        </marker>
+        <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#ef4444"/>
+        </marker>
+        <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+        </marker>
+
+        <linearGradient id="gradSwin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.05"/>
+        </linearGradient>
+        <linearGradient id="gradMamba" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.05"/>
+        </linearGradient>
+        <linearGradient id="gradDecoder" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#10b981" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#10b981" stop-opacity="0.05"/>
+        </linearGradient>
+
+        <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+        </filter>
+
+        <pattern id="diag" patternUnits="userSpaceOnUse" width="6" height="6">
+          <path d="M0,6 l6,-6" stroke="#94a3b8" stroke-width="0.5" opacity="0.3"/>
+        </pattern>
+      </defs>
+
+      <!-- ============================== -->
+      <!-- SECTION 1: DATA INPUT PIPELINE -->
+      <!-- ============================== -->
+      <g class="module-group" data-phase="all pretrain finetune eval" data-module="data">
+
+        <!-- Section Background -->
+        <rect x="30" y="30" width="1620" height="320" rx="12" fill="#3b82f6" fill-opacity="0.04" stroke="#3b82f6" stroke-opacity="0.2" stroke-dasharray="4,2"/>
+        <text x="50" y="55" fill="#3b82f6" font-size="14" font-weight="700" letter-spacing="1">① DATA INGESTION &amp; PREPROCESSING PIPELINE</text>
+        <text x="50" y="72" fill="#64748b" font-size="10">src/data/ · SplitManager · GBMReservoirDataset · transforms.py</text>
+
+        <!-- GBM Reservoir Dataset -->
+        <g data-tooltip="GBM Reservoir Dataset|25 ZIP archives (GBM_Reservoir_1..25.zip)|4 MRI Modalities: T1, T1ce, T2, FLAIR|3D NIfTI volumes (.nii.gz)|UCSF-PDGM Glioblastoma cohort"
+           data-shape="Per-subject: [4×D×H×W] + [1×D×H×W] seg">
+          <rect x="60" y="90" width="210" height="80" rx="8" fill="var(--card)" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="165" y="115" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="700">GBM Reservoir</text>
+          <text x="165" y="132" text-anchor="middle" fill="var(--muted)" font-size="10">25 ZIP Archives</text>
+          <text x="165" y="146" text-anchor="middle" fill="var(--muted)" font-size="10">T1 · T1ce · T2 · FLAIR</text>
+          <text x="165" y="160" text-anchor="middle" fill="var(--muted)" font-size="9">+ Segmentation Masks</text>
+        </g>
+
+        <!-- Arrow: Dataset → SplitManager -->
+        <line x1="270" y1="130" x2="320" y2="130" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+        <!-- SplitManager -->
+        <g data-tooltip="SplitManager|Deterministic 60/20/20 Train/Val/Test split|SHA-256 checksum verification per modality|Zero data leakage assertion guard|Persisted split_manifest.json + split_checklist.txt|Seed=42, reproducible partitioning"
+           data-shape="→ train_ids, val_ids, test_ids: List[str]">
+          <rect x="330" y="85" width="210" height="90" rx="8" fill="var(--card)" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="435" y="110" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="700">SplitManager</text>
+          <text x="435" y="127" text-anchor="middle" fill="var(--muted)" font-size="10">60% Train / 20% Val / 20% Test</text>
+          <text x="435" y="141" text-anchor="middle" fill="var(--muted)" font-size="10">SHA-256 Checksum Verification</text>
+          <text x="435" y="155" text-anchor="middle" fill="var(--muted)" font-size="10">Zero-Leakage Assertion Guard</text>
+          <text x="435" y="167" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="600">split_manifest.json</text>
+        </g>
+
+        <!-- Arrow: SplitManager → GBMReservoirDataset -->
+        <line x1="540" y1="130" x2="590" y2="130" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+        <!-- GBMReservoirDataset -->
+        <g data-tooltip="GBMReservoirDataset (torch.utils.data.Dataset)|mode='pretrain': returns {x_perturbed, x_clean, voxel_mask}|mode='finetune': returns {image, seg, label, subject_id}|Reads NIfTI from ZIP or disk via nibabel|Applies normalize_intensity(), crop_or_pad_3d(), convert_brats_labels()|Optional random_affine_augment_3d() for training"
+           data-shape="[B, 4, 96, 96, 96] images + [B, 3, 96, 96, 96] labels">
+          <rect x="600" y="85" width="240" height="90" rx="8" fill="var(--card)" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="720" y="110" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="700">GBMReservoirDataset</text>
+          <text x="720" y="127" text-anchor="middle" fill="var(--muted)" font-size="10">NIfTI I/O (ZIP ↔ Disk)</text>
+          <text x="720" y="141" text-anchor="middle" fill="var(--muted)" font-size="10">mode: pretrain | finetune</text>
+          <text x="720" y="155" text-anchor="middle" fill="var(--muted)" font-size="10">normalize · crop/pad · augment</text>
+          <text x="720" y="167" text-anchor="middle" fill="var(--accent3)" font-size="9">target_shape = (96, 96, 96)</text>
+        </g>
+
+        <!-- Transforms Pipeline (below dataset) -->
+        <g data-tooltip="Preprocessing Transforms|normalize_intensity(): Percentile clipping (0.5–99.5%) + Z-score per modality|crop_or_pad_3d(): Symmetric center crop/zero-pad to target_shape|convert_brats_labels(): Raw → TC(1∪3), WT(1∪2∪3), ET(3)|extract_glioma_grade(): ET≥50 or TC≥150 voxels → HGG(1) else LGG(0)|random_affine_augment_3d(): 3D flip (p=0.5) + 90° axial rotation (p=0.5)"
+           data-shape="transforms.py functions">
+          <rect x="600" y="195" width="240" height="75" rx="8" fill="var(--card)" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,2" filter="url(#shadow)"/>
+          <text x="720" y="215" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="600">transforms.py</text>
+          <text x="720" y="230" text-anchor="middle" fill="var(--muted)" font-size="9">normalize_intensity · crop_or_pad_3d</text>
+          <text x="720" y="243" text-anchor="middle" fill="var(--muted)" font-size="9">convert_brats_labels · extract_glioma_grade</text>
+          <text x="720" y="256" text-anchor="middle" fill="var(--muted)" font-size="9">random_affine_augment_3d</text>
+        </g>
+        <line x1="720" y1="175" x2="720" y2="195" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- Arrow: GBMReservoirDataset → IS-MIM -->
+        <line x1="840" y1="115" x2="900" y2="115" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+        <text x="870" y="108" text-anchor="middle" fill="var(--muted)" font-size="9" font-style="italic">pretrain</text>
+
+        <!-- Arrow: GBMReservoirDataset → Direct to Encoder -->
+        <line x1="840" y1="145" x2="900" y2="145" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+        <text x="870" y="158" text-anchor="middle" fill="var(--muted)" font-size="9" font-style="italic">finetune</text>
+
+        <!-- IS-MIM Transform -->
+        <g class="module-group" data-phase="all pretrain" data-module="ismim"
+           data-tooltip="IntraModalityMIMTransform (IS-MIM)|Step 1: image_to_tokens_3d → [B,4,16,16,16,216] cuboid tokens|Step 2: synthesize_modalities (swap_prob=0.5) → cross-modality patch swaps|Step 3: apply_block_masking_3d (mask_ratio=0.5) → 50% tokens zeroed|Step 4: tokens_to_image_3d → x_perturbed [B,4,96,96,96]|Outputs: (x_perturbed, x_clean, voxel_mask) for masked MSE loss"
+           data-shape="Input: [4, 96, 96, 96] → Output: (x_perturbed, x_clean, voxel_mask)">
+          <rect x="910" y="85" width="270" height="100" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="1045" y="108" text-anchor="middle" fill="#f59e0b" font-size="13" font-weight="700">IS-MIM Transform</text>
+          <text x="1045" y="123" text-anchor="middle" fill="var(--muted)" font-size="10">Intra-Modality Masked Image Modeling</text>
+
+          <!-- Mini pipeline inside IS-MIM -->
+          <rect x="925" y="132" width="60" height="22" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+          <text x="955" y="147" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">Tokenize</text>
+
+          <text x="990" y="146" fill="#f59e0b" font-size="10">→</text>
+
+          <rect x="998" y="132" width="60" height="22" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+          <text x="1028" y="147" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">Swap</text>
+
+          <text x="1063" y="146" fill="#f59e0b" font-size="10">→</text>
+
+          <rect x="1071" y="132" width="60" height="22" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+          <text x="1101" y="147" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">Mask 50%</text>
+
+          <text x="1136" y="146" fill="#f59e0b" font-size="10">→</text>
+
+          <rect x="1141" y="132" width="28" height="22" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+          <text x="1155" y="147" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">Re</text>
+
+          <text x="1045" y="175" text-anchor="middle" fill="var(--accent3)" font-size="9">patch_size=16³ · mask_ratio=0.5 · swap_prob=0.5</text>
+        </g>
+
+        <!-- DataLoader -->
+        <g data-tooltip="PyTorch DataLoader|batch_size=2, shuffle=True (train)|num_workers=0 (Windows compatible)|pin_memory=True if CUDA available"
+           data-shape="Batched tensors [B, ...]">
+          <rect x="1240" y="90" width="170" height="70" rx="8" fill="var(--card)" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="1325" y="115" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="700">DataLoader</text>
+          <text x="1325" y="132" text-anchor="middle" fill="var(--muted)" font-size="10">batch_size=2 · shuffle</text>
+          <text x="1325" y="146" text-anchor="middle" fill="var(--muted)" font-size="10">pin_memory · num_workers=0</text>
+        </g>
+
+        <!-- Arrow IS-MIM → DataLoader -->
+        <line x1="1180" y1="125" x2="1240" y2="125" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+        <!-- Entry point scripts -->
+        <g data-tooltip="Entry Point Scripts|pretrain.py → IS-MIM self-supervised pre-training (Phase 1)|finetune.py → Multi-task fine-tuning: Seg + Clf (Phase 2)|evaluate.py → Test-set inference & metrics (Phase 3)|demo_pipeline.py → Full architectural tensor-flow walkthrough"
+           data-shape="CLI scripts orchestrating full pipeline">
+          <rect x="1440" y="85" width="190" height="90" rx="8" fill="var(--card)" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="1535" y="108" text-anchor="middle" fill="var(--fg)" font-size="12" font-weight="700">Entry Points</text>
+          <text x="1535" y="126" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="600">pretrain.py</text>
+          <text x="1535" y="141" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">finetune.py</text>
+          <text x="1535" y="156" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">evaluate.py</text>
+          <text x="1535" y="168" text-anchor="middle" fill="var(--muted)" font-size="9">demo_pipeline.py</text>
+        </g>
+        <line x1="1410" y1="125" x2="1440" y2="125" stroke="#64748b" stroke-width="1" marker-end="url(#arrowGray)"/>
+      </g>
+
+      <!-- ============================ -->
+      <!-- BIG FLOW ARROW: Data → Model -->
+      <!-- ============================ -->
+      <g class="module-group" data-phase="all pretrain finetune" data-module="flow1">
+        <line x1="840" y1="280" x2="840" y2="390" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)" class="flow-arrow"/>
+        <text x="855" y="340" fill="#3b82f6" font-size="11" font-weight="600">[B, 4, 96, 96, 96]</text>
+        <text x="855" y="355" fill="var(--muted)" font-size="9">4-Modality MRI Volume</text>
+      </g>
+
+      <!-- ============================================== -->
+      <!-- SECTION 2: SWINMAMBA HYBRID ENCODER             -->
+      <!-- ============================================== -->
+      <g class="module-group" data-phase="all pretrain finetune" data-module="encoder">
+
+        <!-- Full encoder background -->
+        <rect x="30" y="380" width="1620" height="750" rx="12" fill="url(#diag)" fill-opacity="0.3" stroke="#8b5cf6" stroke-opacity="0.3" stroke-dasharray="4,2"/>
+        <text x="50" y="405" fill="#8b5cf6" font-size="14" font-weight="700" letter-spacing="1">② SWINMAMBA HYBRID 3D ENCODER</text>
+        <text x="50" y="422" fill="#64748b" font-size="10">src/models/swin_mamba_dual.py · SwinMambaEncoder · 4-Stage Hierarchical Feature Extraction</text>
+
+        <!-- ============= STEM ============= -->
+        <g data-tooltip="Encoder Stem (downsample_layers[0])|Conv3d(4→48, kernel=7×7×7, stride=2, padding=3)|BatchNorm3d(48) + LeakyReLU(0.01)|2× spatial downsampling in all 3 dimensions|Extracts low-level volumetric features from raw MRI"
+           data-shape="[B, 4, 96, 96, 96] → [B, 48, 48, 48, 48]">
+          <rect x="350" y="440" width="260" height="60" rx="8" fill="var(--card)" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="480" y="463" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="700">Stem: Conv3d 7×7×7, s=2</text>
+          <text x="480" y="478" text-anchor="middle" fill="var(--muted)" font-size="10">BatchNorm3d · LeakyReLU</text>
+          <text x="480" y="492" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 4, 96³] → [B, 48, 48³]</text>
+        </g>
+
+        <!-- Skip Stem encoder -->
+        <g data-tooltip="Skip Stem Encoder (enc_stem)|UnetrBasicBlock3D(4→48, kernel=3)|Processes raw input at full resolution|Provides highest-resolution skip connection to decoder|Residual Conv3d blocks with InstanceNorm3d"
+           data-shape="[B, 4, 96, 96, 96] → [B, 48, 96, 96, 96]">
+          <rect x="720" y="440" width="200" height="60" rx="6" fill="var(--card)" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2" filter="url(#shadow)"/>
+          <text x="820" y="460" text-anchor="middle" fill="#10b981" font-size="11" font-weight="600">enc_stem</text>
+          <text x="820" y="474" text-anchor="middle" fill="var(--muted)" font-size="9">UnetrBasicBlock3D(4→48)</text>
+          <text x="820" y="488" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 48, 96, 96, 96]</text>
+        </g>
+        <!-- Skip arrow stem to decoder -->
+        <path d="M920,470 L1040,470 L1040,1650" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGray)"/>
+        <text x="1050" y="560" fill="#94a3b8" font-size="9" font-weight="600" transform="rotate(90 1050 560)">skip_stem</text>
+
+        <!-- Arrow: Stem → Stage 0 -->
+        <line x1="480" y1="500" x2="480" y2="525" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+        <!-- ============= STAGE 0: SWIN ============= -->
+        <g data-tooltip="Stage 0: 3D Swin Transformer (High Resolution)|2× SwinTransformerBlock3D alternating W-MSA / SW-MSA|Window size = (7,7,7), shift_size = (0,0,0) then (3,3,3)|num_heads=3, mlp_ratio=4.0, drop_path|WindowAttention3D with 3D relative position bias|Captures local tumor boundaries and tissue geometry"
+           data-shape="[B, 48, 48, 48, 48] → [B, 48, 48, 48, 48]">
+          <rect x="200" y="530" width="310" height="70" rx="8" fill="url(#gradSwin)" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="355" y="553" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="700">Stage 0 — 3D Swin Transformer ×2</text>
+          <text x="355" y="568" text-anchor="middle" fill="var(--muted)" font-size="10">W-MSA ↔ SW-MSA · window=(7,7,7) · heads=3</text>
+          <text x="355" y="582" text-anchor="middle" fill="var(--muted)" font-size="9">+ BatchNorm3d + MlpChannel(48→96→48)</text>
+          <text x="355" y="594" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 48, 48³]</text>
+        </g>
+
+        <!-- Skip 0 -->
+        <g data-tooltip="Skip 0 Encoder (enc_stage0)|UnetrBasicBlock3D(48→48)|Residual Conv3d processing of Stage 0 features|Half-resolution skip to decoder2"
+           data-shape="[B, 48, 48, 48, 48] → [B, 48, 48, 48, 48]">
+          <rect x="560" y="540" width="170" height="50" rx="6" fill="var(--card)" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="645" y="558" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">enc_stage0 (48→48)</text>
+          <text x="645" y="573" text-anchor="middle" fill="var(--muted)" font-size="9">UnetrBasicBlock3D</text>
+          <text x="645" y="585" text-anchor="middle" fill="var(--accent3)" font-size="8">[B, 48, 48³]</text>
+        </g>
+        <line x1="510" y1="565" x2="560" y2="565" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arrowGray)"/>
+        <!-- Skip arrow to decoder2 -->
+        <path d="M730,565 L960,565 L960,1570" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGray)"/>
+        <text x="970" y="620" fill="#94a3b8" font-size="9" font-weight="600" transform="rotate(90 970 620)">skip_0</text>
+
+        <!-- Arrow: Stage 0 → Downsample 1 -->
+        <line x1="355" y1="600" x2="355" y2="625" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+        <!-- Downsample 0→1 -->
+        <g data-tooltip="Patch Merging / Downsample Layer 1|BatchNorm3d(48) + Conv3d(48→96, kernel=2, stride=2)|2× spatial downsampling across all 3 axes|Channel dimension doubled: 48 → 96"
+           data-shape="[B, 48, 48, 48, 48] → [B, 96, 24, 24, 24]">
+          <rect x="280" y="625" width="150" height="35" rx="5" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.5"/>
+          <text x="355" y="641" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">↓ Conv3d 2×2×2, s=2</text>
+          <text x="355" y="654" text-anchor="middle" fill="#6d28d9" font-size="8">48→96 · [B, 96, 24³]</text>
+        </g>
+
+        <!-- Arrow -->
+        <line x1="355" y1="660" x2="355" y2="685" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+        <!-- ============= STAGE 1: SWIN ============= -->
+        <g data-tooltip="Stage 1: 3D Swin Transformer (Mid Resolution)|2× SwinTransformerBlock3D alternating W-MSA / SW-MSA|Window size = (7,7,7), shift_size = (0,0,0) then (3,3,3)|num_heads=6, mlp_ratio=4.0|Captures medium-scale anatomical structures"
+           data-shape="[B, 96, 24, 24, 24] → [B, 96, 24, 24, 24]">
+          <rect x="200" y="690" width="310" height="70" rx="8" fill="url(#gradSwin)" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)"/>
+          <text x="355" y="713" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="700">Stage 1 — 3D Swin Transformer ×2</text>
+          <text x="355" y="728" text-anchor="middle" fill="var(--muted)" font-size="10">W-MSA ↔ SW-MSA · window=(7,7,7) · heads=6</text>
+          <text x="355" y="742" text-anchor="middle" fill="var(--muted)" font-size="9">+ BatchNorm3d + MlpChannel(96→192→96)</text>
+          <text x="355" y="754" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 96, 24³]</text>
+        </g>
+
+        <!-- Skip 1 -->
+        <g data-tooltip="Skip 1 Encoder (enc_stage1)|UnetrBasicBlock3D(96→96)|Quarter-resolution skip to decoder3"
+           data-shape="[B, 96, 24, 24, 24] → [B, 96, 24, 24, 24]">
+          <rect x="560" y="700" width="170" height="50" rx="6" fill="var(--card)" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="645" y="718" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">enc_stage1 (96→96)</text>
+          <text x="645" y="733" text-anchor="middle" fill="var(--muted)" font-size="9">UnetrBasicBlock3D</text>
+          <text x="645" y="745" text-anchor="middle" fill="var(--accent3)" font-size="8">[B, 96, 24³]</text>
+        </g>
+        <line x1="510" y1="725" x2="560" y2="725" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arrowGray)"/>
+        <path d="M730,725 L880,725 L880,1490" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGray)"/>
+        <text x="890" y="780" fill="#94a3b8" font-size="9" font-weight="600" transform="rotate(90 890 780)">skip_1</text>
+
+        <!-- Arrow: Stage 1 → Downsample 2 -->
+        <line x1="355" y1="760" x2="355" y2="785" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+        <!-- Downsample 1→2 -->
+        <g data-tooltip="Patch Merging / Downsample Layer 2|BatchNorm3d(96) + Conv3d(96→192, kernel=2, stride=2)|Channel: 96 → 192"
+           data-shape="[B, 96, 24, 24, 24] → [B, 192, 12, 12, 12]">
+          <rect x="280" y="785" width="150" height="35" rx="5" fill="#cffafe" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="355" y="801" text-anchor="middle" fill="#0e7490" font-size="10" font-weight="600">↓ Conv3d 2×2×2, s=2</text>
+          <text x="355" y="814" text-anchor="middle" fill="#0e7490" font-size="8">96→192 · [B, 192, 12³]</text>
+        </g>
+
+        <!-- Arrow -->
+        <line x1="355" y1="820" x2="355" y2="845" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+        <!-- ============= STAGE 2: GSC + MAMBA ============= -->
+        <g data-tooltip="Stage 2: GSC + Tri-Directional Mamba SSM|GSC (Global Spatial Context): Dual-branch 3×3×3 + 1×1×1 Conv residual block|2× MambaLayer with Tri-Directional 3D scanning:|  - Direction 0 (Axial): D→H→W flattening|  - Direction 1 (Sagittal): W→D→H flattening|  - Direction 2 (Coronal): H→W→D flattening|SelectiveScanSSM: S6 selective state space with d_state=16|Linear memory complexity O(L) vs O(L²) for attention|+ BatchNorm3d + MlpChannel(192→384→192)"
+           data-shape="[B, 192, 12, 12, 12] → [B, 192, 12, 12, 12]">
+          <rect x="135" y="850" width="440" height="85" rx="8" fill="url(#gradMamba)" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+          <text x="355" y="872" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="700">Stage 2 — GSC + Tri-Directional Mamba ×2</text>
+          <text x="355" y="888" text-anchor="middle" fill="var(--muted)" font-size="10">Global Spatial Conv → 3D SSM (Axial · Sagittal · Coronal)</text>
+          <text x="355" y="903" text-anchor="middle" fill="var(--muted)" font-size="9">d_state=16 · d_conv=3 · expand=1 · S6 Selective Scan</text>
+          <text x="355" y="917" text-anchor="middle" fill="var(--muted)" font-size="9">+ BatchNorm3d + MlpChannel(192→384→192)</text>
+          <text x="355" y="930" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 192, 12³]</text>
+        </g>
+
+        <!-- Skip 2 -->
+        <g data-tooltip="Skip 2 Encoder (enc_stage2)|UnetrBasicBlock3D(192→192)|Eighth-resolution skip to decoder4"
+           data-shape="[B, 192, 12, 12, 12] → [B, 192, 12, 12, 12]">
+          <rect x="620" y="860" width="180" height="50" rx="6" fill="var(--card)" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="710" y="878" text-anchor="middle" fill="#10b981" font-size="10" font-weight="600">enc_stage2 (192→192)</text>
+          <text x="710" y="893" text-anchor="middle" fill="var(--muted)" font-size="9">UnetrBasicBlock3D</text>
+          <text x="710" y="905" text-anchor="middle" fill="var(--accent3)" font-size="8">[B, 192, 12³]</text>
+        </g>
+        <line x1="575" y1="885" x2="620" y2="885" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arrowGray)"/>
+        <path d="M800,885 L830,885 L830,1400" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGray)"/>
+        <text x="840" y="940" fill="#94a3b8" font-size="9" font-weight="600" transform="rotate(90 840 940)">skip_2</text>
+
+        <!-- Arrow: Stage 2 → Downsample 3 -->
+        <line x1="355" y1="935" x2="355" y2="960" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+        <!-- Downsample 2→3 -->
+        <g data-tooltip="Downsample Layer 3|BatchNorm3d(192) + Conv3d(192→384, kernel=2, stride=2)|Channel: 192 → 384"
+           data-shape="[B, 192, 12, 12, 12] → [B, 384, 6, 6, 6]">
+          <rect x="280" y="960" width="150" height="35" rx="5" fill="#cffafe" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="355" y="976" text-anchor="middle" fill="#0e7490" font-size="10" font-weight="600">↓ Conv3d 2×2×2, s=2</text>
+          <text x="355" y="989" text-anchor="middle" fill="#0e7490" font-size="8">192→384 · [B, 384, 6³]</text>
+        </g>
+
+        <!-- Arrow -->
+        <line x1="355" y1="995" x2="355" y2="1020" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+        <!-- ============= STAGE 3: GSC + MAMBA (Bottleneck) ============= -->
+        <g data-tooltip="Stage 3: GSC + Tri-Directional Mamba SSM (Bottleneck)|Same architecture as Stage 2 but at deepest resolution|GSC: Global Spatial Context dual-branch refinement|2× MambaLayer: Tri-directional 3D scanning (Axial/Sagittal/Coronal)|Captures long-range global tumor context at lowest resolution|num_heads=24 equivalent receptive field, d_state=16|+ BatchNorm3d + MlpChannel(384→768→384)"
+           data-shape="[B, 384, 6, 6, 6] → [B, 384, 6, 6, 6]">
+          <rect x="135" y="1025" width="440" height="75" rx="8" fill="url(#gradMamba)" stroke="#06b6d4" stroke-width="2.5" filter="url(#shadow)"/>
+          <text x="355" y="1048" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="700">Stage 3 — GSC + Tri-Directional Mamba ×2 (Bottleneck)</text>
+          <text x="355" y="1064" text-anchor="middle" fill="var(--muted)" font-size="10">Global Spatial Conv → 3D SSM (Axial · Sagittal · Coronal)</text>
+          <text x="355" y="1079" text-anchor="middle" fill="var(--muted)" font-size="9">d_state=16 · Deepest features · Global tumor context</text>
+          <text x="355" y="1093" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 384, 6³]</text>
+        </g>
+
+        <!-- Arrow: Stage 3 → Bottleneck Proj -->
+        <line x1="355" y1="1100" x2="355" y2="1130" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+        <!-- ============= Bottleneck Projection ============= -->
+        <!-- Using wider centering -->
+        <g data-tooltip="Bottleneck Channel Expansion (enc_bottleneck)|UnetrBasicBlock3D(384→768)|Doubles channel dimension for decoder entry|Provides the deepest feature representation|Used by both decoder path AND classification head"
+           data-shape="[B, 384, 6, 6, 6] → [B, 768, 6, 6, 6]">
+          <rect x="200" y="1130" width="420" height="55" rx="8" fill="var(--card)" stroke="#06b6d4" stroke-width="2.5" filter="url(#shadow)"/>
+          <text x="410" y="1152" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="700">enc_bottleneck: UnetrBasicBlock3D(384 → 768)</text>
+          <text x="410" y="1168" text-anchor="middle" fill="var(--muted)" font-size="10">Channel expansion · Conv3d + InstanceNorm3d + LeakyReLU</text>
+          <text x="410" y="1180" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 768, 6, 6, 6]</text>
+        </g>
+
+        <!-- Encoder architectural annotation (right side) -->
+        <g>
+          <!-- Swin region bracket -->
+          <rect x="90" y="530" width="12" height="230" rx="3" fill="#8b5cf6" fill-opacity="0.3"/>
+          <text x="80" y="650" fill="#8b5cf6" font-size="10" font-weight="700" text-anchor="end" transform="rotate(-90 80 650)">SWIN STAGES (Local)</text>
+
+          <!-- Mamba region bracket -->
+          <rect x="90" y="850" width="12" height="250" rx="3" fill="#06b6d4" fill-opacity="0.3"/>
+          <text x="80" y="980" fill="#06b6d4" font-size="10" font-weight="700" text-anchor="end" transform="rotate(-90 80 980)">MAMBA STAGES (Global)</text>
+        </g>
+
+        <!-- Hybrid allocation annotation -->
+        <g>
+          <rect x="1100" y="530" width="290" height="100" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1" filter="url(#shadow)"/>
+          <text x="1245" y="555" text-anchor="middle" fill="var(--fg)" font-size="11" font-weight="700">Hybrid Stage Allocation Strategy</text>
+          <text x="1245" y="575" text-anchor="middle" fill="#8b5cf6" font-size="10">Stages 0–1: Swin Transformer</text>
+          <text x="1245" y="590" text-anchor="middle" fill="var(--muted)" font-size="9">↳ High spatial resolution → local boundaries</text>
+          <text x="1245" y="608" text-anchor="middle" fill="#06b6d4" font-size="10">Stages 2–3: GSC + Mamba SSM</text>
+          <text x="1245" y="623" text-anchor="middle" fill="var(--muted)" font-size="9">↳ Low spatial resolution → global context, O(L)</text>
+        </g>
+
+        <!-- SSM Detail Box -->
+        <g data-tooltip="Selective State Space Model (S6)|Core Mamba operation replacing attention|Continuous-to-discrete ZOH discretization:|  dA = exp(Δ ⊗ A), dB = Δ ⊗ B|  h[t] = dA[t]·h[t−1] + dB[t]·x[t]|  y[t] = C[t]·h[t] + D·x[t]|Gated output: y = y ⊙ SiLU(z)|Pure-PyTorch fallback for Windows (no CUDA compile)"
+           data-shape="selective_scan.py">
+          <rect x="1100" y="660" width="290" height="130" rx="8" fill="var(--card)" stroke="#06b6d4" stroke-width="1.5" filter="url(#shadow)"/>
+          <text x="1245" y="682" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="700">Selective Scan SSM (S6)</text>
+          <text x="1245" y="700" text-anchor="middle" fill="var(--muted)" font-size="9">selective_scan.py</text>
+          <text x="1115" y="718" fill="var(--fg)" font-size="9" font-family="Consolas, monospace">x → in_proj → [x, z] (gate)</text>
+          <text x="1115" y="733" fill="var(--fg)" font-size="9" font-family="Consolas, monospace">x → Conv1d → SiLU → x_proj</text>
+          <text x="1115" y="748" fill="var(--fg)" font-size="9" font-family="Consolas, monospace">  → split(Δ, B, C) → ZOH disc.</text>
+          <text x="1115" y="763" fill="var(--fg)" font-size="9" font-family="Consolas, monospace">h[t] = dA·h[t-1] + dB·x[t]</text>
+          <text x="1115" y="778" fill="var(--fg)" font-size="9" font-family="Consolas, monospace">y[t] = C·h[t] + D·x[t] → gate</text>
+        </g>
+
+        <!-- Tri-directional scanning annotation -->
+        <g>
+          <rect x="1100" y="810" width="290" height="80" rx="8" fill="var(--card)" stroke="#06b6d4" stroke-width="1" filter="url(#shadow)"/>
+          <text x="1245" y="832" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="700">Tri-Directional 3D Scanning</text>
+          <text x="1120" y="852" fill="var(--muted)" font-size="10">🔵 Dir 0 (Axial):    D→H→W flattening</text>
+          <text x="1120" y="867" fill="var(--muted)" font-size="10">🟢 Dir 1 (Sagittal): W→D→H flattening</text>
+          <text x="1120" y="882" fill="var(--muted)" font-size="10">🟠 Dir 2 (Coronal):  H→W→D flattening</text>
+        </g>
+      </g>
+
+      <!-- ================================================================ -->
+      <!-- SECTION 3: CLASSIFICATION HEAD (branches from bottleneck)         -->
+      <!-- ================================================================ -->
+      <g class="module-group" data-phase="all finetune" data-module="classification">
+        <!-- Arrow from bottleneck to clf head -->
+        <path d="M620,1157 L700,1157 L700,1200" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+        <text x="730" y="1180" fill="#f59e0b" font-size="9" font-weight="600">bottleneck</text>
+
+        <g data-tooltip="Classification Head (ClassificationHead)|Global Average Pooling (GAP) → [B, 768]|Global Max Pooling (GMP) → [B, 768]|Concatenation → [B, 1536]|MLP: 1536 → 256 (LayerNorm, GELU, Dropout=0.3)|→ 128 (LayerNorm, GELU, Dropout=0.15)|→ 2 (HGG vs LGG logits)|Glioma grade classification from deepest bottleneck features"
+           data-shape="[B, 768, 6, 6, 6] → [B, 2]">
+          <rect x="630" y="1205" width="260" height="100" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="760" y="1228" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">Classification Head</text>
+          <text x="760" y="1245" text-anchor="middle" fill="var(--muted)" font-size="10">GAP [B,768] ⊕ GMP [B,768] → [B,1536]</text>
+          <text x="760" y="1260" text-anchor="middle" fill="var(--muted)" font-size="10">MLP: 1536→256→128→2</text>
+          <text x="760" y="1275" text-anchor="middle" fill="var(--muted)" font-size="9">LayerNorm · GELU · Dropout</text>
+          <text x="760" y="1295" text-anchor="middle" fill="var(--accent3)" font-size="9">→ [B, 2] HGG vs LGG logits</text>
+        </g>
+      </g>
+
+      <!-- ============================================== -->
+      <!-- SECTION 4: UNETR DECODER                       -->
+      <!-- ============================================== -->
+      <g class="module-group" data-phase="all pretrain finetune" data-module="decoder">
+
+        <rect x="30" y="1320" width="770" height="440" rx="12" fill="url(#gradDecoder)" fill-opacity="0.5" stroke="#10b981" stroke-opacity="0.3" stroke-dasharray="4,2"/>
+        <text x="50" y="1345" fill="#10b981" font-size="14" font-weight="700" letter-spacing="1">③ UNETR PROGRESSIVE DECODER</text>
+        <text x="50" y="1362" fill="#64748b" font-size="10">src/models/unetr_blocks.py · UnetrUpBlock3D with EV2Block Skip Fusion</text>
+
+        <!-- Arrow: Bottleneck → Decoder4 -->
+        <line x1="355" y1="1185" x2="355" y2="1370" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" class="flow-arrow"/>
+        <text x="370" y="1280" fill="#10b981" font-size="9">[B, 768, 6³]</text>
+
+        <!-- Decoder 4 -->
+        <g data-tooltip="Decoder Stage 4 (decoder4)|UnetrUpBlock3D(768→192)|ConvTranspose3d: upsample 6³ → 12³|Concatenate with skip_2 [B,192,12³] → [B,384,12³]|EV2Block(384→192): Enhanced V2 Residual with SE attention"
+           data-shape="[B, 768, 6³] + skip_2[B, 192, 12³] → [B, 192, 12³]">
+          <rect x="200" y="1375" width="360" height="55" rx="8" fill="var(--card)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+          <text x="380" y="1396" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">decoder4: UnetrUpBlock3D(768→192) + EV2</text>
+          <text x="380" y="1411" text-anchor="middle" fill="var(--muted)" font-size="9">ConvTranspose3d ↑2× → Cat(skip_2) → EV2Block(384→192)</text>
+          <text x="380" y="1424" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 192, 12, 12, 12]</text>
+        </g>
+
+        <!-- Arrow: D4 → D3 -->
+        <line x1="380" y1="1430" x2="380" y2="1460" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+        <!-- Decoder 3 -->
+        <g data-tooltip="Decoder Stage 3 (decoder3)|UnetrUpBlock3D(192→96)|ConvTranspose3d: upsample 12³ → 24³|Concatenate with skip_1 [B,96,24³] → [B,192,24³]|EV2Block(192→96): SE channel attention + refinement"
+           data-shape="[B, 192, 12³] + skip_1[B, 96, 24³] → [B, 96, 24³]">
+          <rect x="200" y="1465" width="360" height="55" rx="8" fill="var(--card)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+          <text x="380" y="1486" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">decoder3: UnetrUpBlock3D(192→96) + EV2</text>
+          <text x="380" y="1501" text-anchor="middle" fill="var(--muted)" font-size="9">ConvTranspose3d ↑2× → Cat(skip_1) → EV2Block(192→96)</text>
+          <text x="380" y="1514" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 96, 24, 24, 24]</text>
+        </g>
+
+        <!-- Arrow: D3 → D2 -->
+        <line x1="380" y1="1520" x2="380" y2="1545" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+        <!-- Decoder 2 -->
+        <g data-tooltip="Decoder Stage 2 (decoder2)|UnetrUpBlock3D(96→48)|ConvTranspose3d: upsample 24³ → 48³|Concatenate with skip_0 [B,48,48³] → [B,96,48³]|EV2Block(96→48)"
+           data-shape="[B, 96, 24³] + skip_0[B, 48, 48³] → [B, 48, 48³]">
+          <rect x="200" y="1550" width="360" height="50" rx="8" fill="var(--card)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+          <text x="380" y="1571" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">decoder2: UnetrUpBlock3D(96→48) + EV2</text>
+          <text x="380" y="1586" text-anchor="middle" fill="var(--muted)" font-size="9">ConvTranspose3d ↑2× → Cat(skip_0) → EV2Block(96→48)</text>
+          <text x="380" y="1596" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 48, 48³]</text>
+        </g>
+
+        <!-- Arrow: D2 → D1 -->
+        <line x1="380" y1="1600" x2="380" y2="1625" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+        <!-- Decoder 1 -->
+        <g data-tooltip="Decoder Stage 1 (decoder1)|UnetrUpBlock3D(48→48)|ConvTranspose3d: upsample 48³ → 96³|Concatenate with skip_stem [B,48,96³] → [B,96,96³]|EV2Block(96→48): Restores to input spatial resolution"
+           data-shape="[B, 48, 48³] + skip_stem[B, 48, 96³] → [B, 48, 96³]">
+          <rect x="200" y="1630" width="360" height="50" rx="8" fill="var(--card)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+          <text x="380" y="1651" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">decoder1: UnetrUpBlock3D(48→48) + EV2</text>
+          <text x="380" y="1666" text-anchor="middle" fill="var(--muted)" font-size="9">ConvTranspose3d ↑2× → Cat(skip_stem) → EV2Block(96→48)</text>
+          <text x="380" y="1676" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 48, 96³]</text>
+        </g>
+
+        <!-- Arrow: D1 → Refine -->
+        <line x1="380" y1="1680" x2="380" y2="1705" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+        <!-- Decoder Refine -->
+        <g data-tooltip="Decoder Refinement (decoder_refine)|EV2Block(48→48)|Final enhanced residual block at full resolution|Squeeze-and-Excitation channel attention (r=4)|Conv3d residual refinement pathway|Produces clean feature maps for task heads"
+           data-shape="[B, 48, 96, 96, 96] → [B, 48, 96, 96, 96]">
+          <rect x="200" y="1710" width="360" height="45" rx="8" fill="var(--card)" stroke="#10b981" stroke-width="2.5" filter="url(#shadow)"/>
+          <text x="380" y="1730" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">decoder_refine: EV2Block(48→48) + SE Attention</text>
+          <text x="380" y="1748" text-anchor="middle" fill="var(--accent3)" font-size="9">[B, 48, 96, 96, 96]</text>
+        </g>
+
+        <!-- EV2 Block detail -->
+        <g data-tooltip="EV2 Enhanced Residual Block|2-layer Conv3d(3×3×3) + InstanceNorm3d + LeakyReLU with skip|Squeeze-and-Excitation: AdaptiveAvgPool3d(1) → Linear(C→C/4→C) → sigmoid|Channel attention scaling: out = out × SE_weight|Refinement: Conv3d(3×3×3) + InstanceNorm3d + LeakyReLU residual|Final: refine + attended (dual skip connection)"
+           data-shape="EV2Block internal architecture">
+          <rect x="610" y="1390" width="170" height="100" rx="8" fill="var(--card)" stroke="#10b981" stroke-width="1" filter="url(#shadow)"/>
+          <text x="695" y="1410" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">EV2Block Detail</text>
+          <text x="695" y="1428" text-anchor="middle" fill="var(--muted)" font-size="9">Conv3d×2 + Residual</text>
+          <text x="695" y="1442" text-anchor="middle" fill="var(--muted)" font-size="9">↓</text>
+          <text x="695" y="1456" text-anchor="middle" fill="var(--muted)" font-size="9">SE Attention (r=4)</text>
+          <text x="695" y="1470" text-anchor="middle" fill="var(--muted)" font-size="9">↓</text>
+          <text x="695" y="1484" text-anchor="middle" fill="var(--muted)" font-size="9">Refinement Conv + Skip</text>
+        </g>
+      </g>
+
+      <!-- ============================================== -->
+      <!-- SECTION 5: TASK HEADS                           -->
+      <!-- ============================================== -->
+      <g class="module-group" data-phase="all pretrain finetune" data-module="heads">
+
+        <!-- Arrow: Decoder → Task Heads -->
+        <line x1="380" y1="1755" x2="380" y2="1810" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+        <!-- Pretrain: Reconstruction Head -->
+        <g class="module-group" data-phase="all pretrain" data-module="recon_head"
+           data-tooltip="Reconstruction Head (recon_head) — Pretrain Only|Conv3d(48→4, kernel=3×3×3, stride=1, padding=1)|Reconstructs original 4-modality MRI volume|Output compared against x_clean using MaskedMSELoss|Only active during IS-MIM self-supervised pre-training phase"
+           data-shape="[B, 48, 96³] → [B, 4, 96, 96, 96]">
+          <rect x="100" y="1815" width="250" height="65" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="225" y="1837" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">Reconstruction Head</text>
+          <text x="225" y="1853" text-anchor="middle" fill="var(--muted)" font-size="10">Conv3d(48→4, k=3×3×3)</text>
+          <text x="225" y="1868" text-anchor="middle" fill="var(--accent3)" font-size="9">→ [B, 4, 96, 96, 96] reconstructed volume</text>
+          <text x="225" y="1875" text-anchor="middle" fill="#f59e0b" font-size="8" font-weight="600">PRETRAIN ONLY</text>
+        </g>
+
+        <!-- Finetune: Segmentation Head -->
+        <g class="module-group" data-phase="all finetune" data-module="seg_head"
+           data-tooltip="Segmentation Head (seg_head)|UnetOutBlock3D: Conv3d(48→3, kernel=1×1×1)|Produces 3-channel dense segmentation logits|Channel 0: Tumor Core (TC) = necrotic + enhancing|Channel 1: Whole Tumor (WT) = TC + edema|Channel 2: Enhancing Tumor (ET)|Applied sigmoid for binary per-class probabilities"
+           data-shape="[B, 48, 96³] → [B, 3, 96, 96, 96]">
+          <rect x="410" y="1815" width="250" height="65" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="535" y="1837" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">Segmentation Head</text>
+          <text x="535" y="1853" text-anchor="middle" fill="var(--muted)" font-size="10">UnetOutBlock3D: Conv3d(48→3, k=1)</text>
+          <text x="535" y="1868" text-anchor="middle" fill="var(--accent3)" font-size="9">→ [B, 3, 96³] TC · WT · ET logits</text>
+          <text x="535" y="1875" text-anchor="middle" fill="#10b981" font-size="8" font-weight="600">FINETUNE ONLY</text>
+        </g>
+      </g>
+
+      <!-- ============================================== -->
+      <!-- SECTION 6: LOSS FUNCTIONS                       -->
+      <!-- ============================================== -->
+      <g class="module-group" data-phase="all pretrain finetune" data-module="losses">
+
+        <rect x="30" y="1910" width="960" height="170" rx="12" fill="#f59e0b" fill-opacity="0.04" stroke="#f59e0b" stroke-opacity="0.2" stroke-dasharray="4,2"/>
+        <text x="50" y="1935" fill="#f59e0b" font-size="14" font-weight="700" letter-spacing="1">④ LOSS FUNCTIONS &amp; OPTIMIZATION</text>
+        <text x="50" y="1952" fill="#64748b" font-size="10">src/losses/ · AdamW Optimizer · CosineAnnealingLR</text>
+
+        <!-- Pretrain Loss -->
+        <g class="module-group" data-phase="all pretrain" data-module="mim_loss"
+           data-tooltip="MaskedMSELoss (IS-MIM Reconstruction Loss)|MSE computed ONLY on masked/swapped voxels|If voxel_mask is None → global MSE fallback|Broadcasts single-channel mask across 4 modalities|loss = Σ(pred - target)² × mask_bool / Σ(mask_bool)|Drives encoder to learn modality-invariant 3D representations"
+           data-shape="(pred[B,4,96³], target[B,4,96³], voxel_mask[B,1,96³]) → scalar loss">
+          <rect x="60" y="1965" width="280" height="75" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="200" y="1988" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">MaskedMSELoss</text>
+          <text x="200" y="2005" text-anchor="middle" fill="var(--muted)" font-size="10">MSE on masked/swapped voxels only</text>
+          <text x="200" y="2020" text-anchor="middle" fill="var(--muted)" font-size="9">ℒ = Σ(pred − target)² × mask / Σ(mask)</text>
+          <text x="200" y="2033" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="600">PRETRAIN LOSS</text>
+        </g>
+
+        <!-- Arrow: Recon Head → MIM Loss -->
+        <line x1="225" y1="1880" x2="200" y2="1965" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+
+        <!-- Finetune Loss -->
+        <g class="module-group" data-phase="all finetune" data-module="multitask_loss"
+           data-tooltip="MultiTaskLoss (Joint Segmentation + Classification)|ℒ_total = ℒ_seg + λ_clf × ℒ_clf|ℒ_seg = SoftDiceLoss + SigmoidFocalLoss|SoftDiceLoss: class_weights=[1.3(TC), 1.0(WT), 1.5(ET)]|SigmoidFocalLoss: α=0.25, γ=2.0 (addresses class imbalance)|ℒ_clf = CrossEntropyLoss(label_smoothing=0.05)|λ_clf = 0.5 (classification loss weight)"
+           data-shape="(outputs{seg,clf}, targets{seg,label}) → {loss, loss_seg, loss_dice, loss_focal, loss_clf}">
+          <rect x="380" y="1965" width="310" height="95" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="535" y="1988" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">MultiTaskLoss</text>
+          <text x="535" y="2005" text-anchor="middle" fill="var(--muted)" font-size="10">ℒ_total = ℒ_seg + λ_clf · ℒ_clf</text>
+          <text x="535" y="2020" text-anchor="middle" fill="var(--muted)" font-size="9">SoftDiceLoss(TC=1.3, WT=1.0, ET=1.5)</text>
+          <text x="535" y="2033" text-anchor="middle" fill="var(--muted)" font-size="9">+ SigmoidFocalLoss(α=0.25, γ=2.0)</text>
+          <text x="535" y="2046" text-anchor="middle" fill="var(--muted)" font-size="9">+ λ=0.5 × CrossEntropyLoss(smoothing=0.05)</text>
+          <text x="535" y="2055" text-anchor="middle" fill="#10b981" font-size="9" font-weight="600">FINETUNE LOSS</text>
+        </g>
+
+        <!-- Arrows: Seg Head → MultiTask Loss, Clf Head → MultiTask Loss -->
+        <line x1="535" y1="1880" x2="535" y2="1965" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+        <path d="M760,1305 L760,1340 L800,1340 L800,2010 L690,2010" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowAmber)"/>
+        <text x="810" y="1700" fill="#f59e0b" font-size="9" font-weight="600" transform="rotate(90 810 1700)">clf_logits</text>
+
+        <!-- Optimizer -->
+        <g data-tooltip="Optimization Configuration|Optimizer: AdamW (lr varies by phase)|  Pretrain: lr=5e-4, weight_decay=1e-5|  Finetune: lr=2e-4, weight_decay=1e-5|Scheduler: CosineAnnealingLR (η_min=1e-6)|AMP: torch.amp.GradScaler for mixed precision|Gradient clipping: max_norm=1.0"
+           data-shape="Optimizer settings">
+          <rect x="720" y="1965" width="250" height="95" rx="8" fill="var(--card)" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+          <text x="845" y="1988" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="700">Optimization</text>
+          <text x="845" y="2005" text-anchor="middle" fill="var(--muted)" font-size="10">AdamW · CosineAnnealingLR</text>
+          <text x="845" y="2020" text-anchor="middle" fill="var(--muted)" font-size="9">Pre: lr=5e-4 · Fine: lr=2e-4</text>
+          <text x="845" y="2035" text-anchor="middle" fill="var(--muted)" font-size="9">AMP GradScaler · Grad Clip=1.0</text>
+          <text x="845" y="2050" text-anchor="middle" fill="var(--muted)" font-size="9">weight_decay=1e-5 · η_min=1e-6</text>
+        </g>
+      </g>
+
+      <!-- ============================================== -->
+      <!-- SECTION 7: EVALUATION & UTILS                   -->
+      <!-- ============================================== -->
+      <g class="module-group" data-phase="all finetune eval" data-module="evaluation">
+
+        <rect x="30" y="2110" width="1620" height="260" rx="12" fill="#ef4444" fill-opacity="0.04" stroke="#ef4444" stroke-opacity="0.2" stroke-dasharray="4,2"/>
+        <text x="50" y="2135" fill="#ef4444" font-size="14" font-weight="700" letter-spacing="1">⑤ EVALUATION, POST-PROCESSING &amp; CHECKPOINT MANAGEMENT</text>
+        <text x="50" y="2152" fill="#64748b" font-size="10">src/utils/ · evaluate.py · metrics.py · postprocessing.py · checkpoint_manager.py</text>
+
+        <!-- Post-processing -->
+        <g data-tooltip="Post-Processing Pipeline (postprocess_predictions)|Step 1: Sigmoid activation on raw logits|Step 2: Binary thresholding at 0.5|Step 3: Connected component analysis (scipy.ndimage.label)|Step 4: Remove small clusters below thresholds:|  WT: 250 voxels, TC: 150 voxels, ET: 100 voxels|Cleans noisy predictions for clinical accuracy"
+           data-shape="[B, 3, D, H, W] logits → [B, 3, D, H, W] binary uint8">
+          <rect x="60" y="2170" width="290" height="90" rx="8" fill="var(--card)" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+          <text x="205" y="2193" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">PostProcessor</text>
+          <text x="205" y="2210" text-anchor="middle" fill="var(--muted)" font-size="10">sigmoid → threshold(0.5) → binarize</text>
+          <text x="205" y="2225" text-anchor="middle" fill="var(--muted)" font-size="10">Connected component analysis</text>
+          <text x="205" y="2240" text-anchor="middle" fill="var(--muted)" font-size="9">Remove: WT&lt;250 · TC&lt;150 · ET&lt;100 voxels</text>
+          <text x="205" y="2253" text-anchor="middle" fill="var(--accent3)" font-size="9">scipy.ndimage.label</text>
+        </g>
+
+        <!-- Metrics -->
+        <g data-tooltip="Evaluation Metrics (metrics.py)|compute_dice_score: 2|P∩G|/(|P|+|G|), returns 1.0 if both empty|compute_hd95: 95th percentile Hausdorff distance (EDT)|  Returns 377.0 mm penalty if one mask empty (BraTS standard)|evaluate_segmentation_case: Per-class Dice + HD95 for TC, WT, ET|  Returns mean_dice and mean_hd95 across all 3 subregions|compute_classification_metrics: Accuracy, Precision, Recall, F1, TP/FP/FN/TN"
+           data-shape="(pred, target) → {dice_tc, hd95_tc, dice_wt, hd95_wt, dice_et, hd95_et, mean_dice, mean_hd95}">
+          <rect x="390" y="2170" width="300" height="90" rx="8" fill="var(--card)" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+          <text x="540" y="2193" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">Evaluation Metrics</text>
+          <text x="540" y="2210" text-anchor="middle" fill="var(--muted)" font-size="10">Dice Score (per-class: TC, WT, ET)</text>
+          <text x="540" y="2225" text-anchor="middle" fill="var(--muted)" font-size="10">HD95 (Euclidean Distance Transform)</text>
+          <text x="540" y="2240" text-anchor="middle" fill="var(--muted)" font-size="10">Classification: Acc · F1 · Precision · Recall</text>
+          <text x="540" y="2253" text-anchor="middle" fill="var(--accent3)" font-size="9">BraTS standard (377mm penalty if empty)</text>
+        </g>
+
+        <!-- Arrow: PostProcessor → Metrics -->
+        <line x1="350" y1="2215" x2="390" y2="2215" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+        <!-- CheckpointManager -->
+        <g data-tooltip="CheckpointManager|save(): Calls assert_no_leakage() before every checkpoint write|load_best() / load_latest(): Restores model, optimizer, scheduler state|transfer_encoder(): Transfers backbone weights from pretrain→finetune|  Filters out recon_head. prefix, checks shape compatibility|Maintains checkpoint_log.json and rolling keep_last_n=3|Refuses to load if leakage_detected flag is True in checkpoint"
+           data-shape="Checkpoint files: pretrain_best.pt → finetune_best.pt">
+          <rect x="730" y="2170" width="290" height="90" rx="8" fill="var(--card)" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+          <text x="875" y="2193" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">CheckpointManager</text>
+          <text x="875" y="2210" text-anchor="middle" fill="var(--muted)" font-size="10">save() with assert_no_leakage()</text>
+          <text x="875" y="2225" text-anchor="middle" fill="var(--muted)" font-size="10">transfer_encoder(): Pretrain→Finetune</text>
+          <text x="875" y="2240" text-anchor="middle" fill="var(--muted)" font-size="9">Rolling checkpoint retention (n=3)</text>
+          <text x="875" y="2253" text-anchor="middle" fill="var(--accent3)" font-size="9">pretrain_best.pt → finetune_best.pt</text>
+        </g>
+
+        <!-- NIfTI Export -->
+        <g data-tooltip="NIfTI Prediction Export|Transposes segmentation masks to [D, H, W, 3]|Saves as .nii.gz using nibabel.Nifti1Image|Channels: TC (Tumor Core), WT (Whole Tumor), ET (Enhancing Tumor)|Clinically viewable in 3D Slicer, ITK-SNAP"
+           data-shape="Binary masks → .nii.gz files">
+          <rect x="1060" y="2170" width="220" height="90" rx="8" fill="var(--card)" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+          <text x="1170" y="2193" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">NIfTI Export</text>
+          <text x="1170" y="2210" text-anchor="middle" fill="var(--muted)" font-size="10">nibabel.Nifti1Image</text>
+          <text x="1170" y="2225" text-anchor="middle" fill="var(--muted)" font-size="10">.nii.gz segmentation masks</text>
+          <text x="1170" y="2243" text-anchor="middle" fill="var(--muted)" font-size="9">Viewable in 3D Slicer · ITK-SNAP</text>
+        </g>
+
+        <!-- Arrow: Metrics → NIfTI -->
+        <line x1="690" y1="2215" x2="730" y2="2215" stroke="#ef4444" stroke-width="1" marker-end="url(#arrowRed)"/>
+        <line x1="1020" y1="2215" x2="1060" y2="2215" stroke="#ef4444" stroke-width="1" marker-end="url(#arrowRed)"/>
+
+        <!-- TensorBoard -->
+        <g data-tooltip="TensorBoard Logging|Pretrain: pretrain/train_loss, pretrain/val_loss|Finetune: finetune/train_loss, finetune/val_dice_TC/WT/ET|finetune/val_hd95, finetune/val_clf_acc/f1|Learning rate, gradient norms|Tracked across epochs for convergence monitoring"
+           data-shape="TensorBoard event files">
+          <rect x="1320" y="2170" width="200" height="90" rx="8" fill="var(--card)" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+          <text x="1420" y="2193" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">TensorBoard</text>
+          <text x="1420" y="2210" text-anchor="middle" fill="var(--muted)" font-size="10">Loss curves · Dice tracking</text>
+          <text x="1420" y="2225" text-anchor="middle" fill="var(--muted)" font-size="10">HD95 · Classification F1</text>
+          <text x="1420" y="2243" text-anchor="middle" fill="var(--muted)" font-size="9">Learning rate scheduling</text>
+        </g>
+        <line x1="1280" y1="2215" x2="1320" y2="2215" stroke="#ef4444" stroke-width="1" marker-end="url(#arrowRed)"/>
+
+        <!-- Phase transfer arrows -->
+        <g>
+          <!-- Pretrain → Finetune checkpoint transfer -->
+          <rect x="1100" y="2290" width="400" height="60" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.5" filter="url(#shadow)"/>
+          <text x="1300" y="2313" text-anchor="middle" fill="var(--fg)" font-size="11" font-weight="700">Phase Transfer: Encoder Weight Transfer</text>
+          <text x="1300" y="2330" text-anchor="middle" fill="var(--muted)" font-size="10">pretrain_best.pt ──transfer_encoder()──→ finetune model</text>
+          <text x="1300" y="2345" text-anchor="middle" fill="var(--muted)" font-size="9">Excludes recon_head.* · Verifies shape compatibility</text>
+        </g>
+      </g>
+
+      <!-- ============================================== -->
+      <!-- CITATION / REFERENCE -->
+      <!-- ============================================== -->
+      <g>
+        <text x="840" y="2390" text-anchor="middle" fill="var(--muted)" font-size="10" font-style="italic">
+          SwinMamba-UNETR Architecture · Rahim et al. (BSPC 2026) · IS-MIM: Qi et al. (BSPC 2024) · UCSF-PDGM GBM Dataset
+        </text>
+      </g>
+
+    </svg>
+  </div>
+
+  <script>
+    // Tooltip system
+    const tooltip = document.getElementById('tooltip');
+    const svgEl = document.getElementById('archDiagram');
+
+    svgEl.querySelectorAll('[data-tooltip]').forEach(el => {
+      el.style.cursor = 'pointer';
+
+      el.addEventListener('mouseenter', (e) => {
+        const raw = el.getAttribute('data-tooltip');
+        const shape = el.getAttribute('data-shape') || '';
+        const parts = raw.split('|');
+        const title = parts[0];
+        const details = parts.slice(1).map(d => `<div style="margin-top:2px">• ${d.trim()}</div>`).join('');
+
+        tooltip.innerHTML = `
+          <div class="tt-title">${title}</div>
+          ${shape ? `<div class="tt-shape">${shape}</div>` : ''}
+          ${details}
+        `;
+        tooltip.style.display = 'block';
+      });
+
+      el.addEventListener('mousemove', (e) => {
+        let x = e.clientX + 15;
+        let y = e.clientY + 10;
+        if (x + 360 > window.innerWidth) x = e.clientX - 370;
+        if (y + 200 > window.innerHeight) y = e.clientY - 200;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top = y + 'px';
+      });
+
+      el.addEventListener('mouseleave', () => {
+        tooltip.style.display = 'none';
+      });
+    });
+
+    // Phase filtering
+    function setPhase(phase) {
+      document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+
+      document.querySelectorAll('.module-group').forEach(g => {
+        const phases = (g.getAttribute('data-phase') || 'all').split(' ');
+        if (phase === 'all' || phases.includes(phase) || phases.includes('all')) {
+          g.classList.remove('dimmed');
+          g.classList.add('highlighted');
+        } else {
+          g.classList.add('dimmed');
+          g.classList.remove('highlighted');
+        }
+      });
+    }
+
+    // SVG Download
+    function downloadSVG() {
+      const svg = document.getElementById('archDiagram');
+      const clone = svg.cloneNode(true);
+
+      // Inject computed styles for standalone SVG
+      const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      style.textContent = `
+        text { font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif; }
+        .dimmed { opacity: 0.15; }
+        .highlighted { opacity: 1; }
+      `;
+      clone.insertBefore(style, clone.firstChild);
+
+      // Replace CSS variables with light theme values
+      const svgStr = new XMLSerializer().serializeToString(clone)
+        .replace(/var\(--card\)/g, '#f8fafc')
+        .replace(/var\(--fg\)/g, '#1a1a2e')
+        .replace(/var\(--muted\)/g, '#64748b')
+        .replace(/var\(--border\)/g, '#e2e8f0')
+        .replace(/var\(--accent3\)/g, '#10b981')
+        .replace(/var\(--bg\)/g, '#ffffff');
+
+      const blob = new Blob([svgStr], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'SwinMamba_UNETR_Architecture.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

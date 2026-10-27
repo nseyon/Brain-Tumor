@@ -1,0 +1,24 @@
+# Core Deep Learning Framework
+torch>=2.0.0
+torchvision
+torchaudio
+
+# Medical Imaging & Volume Processing
+monai>=1.3.0
+nibabel>=5.0.0
+scipy>=1.10.0
+numpy>=1.24.0
+
+# Tensor Manipulations & Accelerators
+einops>=0.7.0
+timm>=0.9.0
+
+# Training Utilities & Progress
+tqdm>=4.65.0
+pyyaml>=6.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+
+# Optional CUDA-accelerated Mamba (if supported on your CUDA setup)
+# Note: On Windows, pure PyTorch fallback is built-in and active if mamba-ssm is not compiled.
+# pip install causal-conv1d>=1.2.0 mamba-ssm>=1.2.0
